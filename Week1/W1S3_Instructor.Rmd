@@ -1,0 +1,675 @@
+---
+title: "Week 1 Session 3"
+author: "Hussain Alsalman"
+date: "April 29, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r, echo = FALSE}
+library("here")
+```
+
+## Foundations of R Programming 
+
+####What is R?
+
+R is a free language and environment for statistical computing and graphics. You can perform a variety of tasks using R language. Some are as follows 
+
+- Exploring and Manipulating Data
+- Building and validating predictive models
+- Applying machine learning and text mining algorithms
+- Creating visually appealing graphs
+- Building online dynamic reports or dashboards
+
+
+## Command Line Interface for R. 
+
+- R is an engine that can be run through CLI.
+- R comes with simple GUI but it is very premitive. 
+- You can run multiple instances of R with no problem. 
+
+###Let's learn how to 
+- Set our working directory 
+- Save our workspace 
+- Load our workspace 
+- Display existing objects 
+- Remove objects 
+- Save our history 
+
+
+## R Basics
+
+### Let's learn how to 
+  - Basic Math 
+  
+```{r}
+1 + 1 
+```
+```{r}
+3 * 7 * 2
+```
+```{r}
+(4 * 6) + 5
+```
+  
+  - Variables 
+
+There are number of ways to assign variables. R most convientional way might look odd for you but trust me you will get used to it very quickly. 
+
+```{r}
+# if you are using RStudio you can use alt + "-" to automatically craete "<-" assignment operator 
+a <- 100
+a
+```
+
+We still can use the "=" operator. But it is really not very common the R community. It was even suggested in the Google R Style Guide. But again they suggested to use dots instead of underscores which I really don't like so it is a choice preference.
+
+```{r}
+a = 300
+a
+```
+
+We can combine assignments of variables in one line. I really don't recommend it but you can do it.
+
+```{r}
+a <- b <- 199
+sprintf("a : %i b : %i", a,b)
+```
+
+Another way to assign variables is using the assign function. The labourios way of assigning variables.
+
+```{r}
+assign("a", 348)
+a 
+```
+
+  - Data Types
+
+The four main types of data most likely to be used are numeric , character (string), Date / POSIXct (time-based) and logical ( TRUE / FALSE ).
+
+#### Numeric type (most flexible)
+```{r}
+x <- 10
+class(x)
+```
+
+```{r}
+is.numeric(x)
+```
+
+As you all know that numbers can be `integers ` or  `doubles`. Sometimes we want to ensure that R knows that the value is integer. We can do that with adding L at the end of the number 
+
+```{r}
+i <- 18L
+class(i)
+```
+
+```{r}
+is.numeric(i)
+```
+
+As in other modern programming languages doing operations on numbers will esclate them to the more flexible type. 
+
+```{r}
+class(58L * 10)
+```
+```{r}
+class (5L / 2L)
+```
+
+##### Warning
+if you don't specify the number with L  it will be non-integer and might cause problems when you do comparisions. 
+
+```{r}
+ class(4L- 1)
+```
+
+```{r}
+identical(4L, 4)
+```
+
+
+#### Character type (most flexible)
+
+R has two ways of dealing with Characters; as `character` or `factor`. factors play important role when we do modeling. 
+
+```{r}
+x <- "data"
+class(x)
+x
+```
+
+
+```{r}
+y <- factor("data")
+class(y)
+y
+```
+
+we can find the length of the character by using `nchar`. It is important to know that this will not work in `factor` types. 
+
+```{r}
+x <- "hello"
+nchar(x)
+```
+
+```{r}
+nchar(194)
+```
+```{r, eval=FALSE}
+y <- factor("factor")
+nchar(y)
+#Error in nchar(y) : 'nchar()' requires a character vector
+```
+
+#### Dates 
+Dealing with dates in R can be very challenging because R has too many flavors of `date` types. The most useful and common are `Date` and `POSIXct.Date`. `Date` stores only dates but `POSIXct.Date` stores dates and time. Both objects are actually represented as the number of days ( `Date` ) or seconds ( `POSIXct` ) since January 1, 1970 
+
+```{r}
+date1 <- as.Date ("2019-06-1")
+class(date1)
+```
+
+```{r}
+as.integer(date1)
+```
+```{r}
+date2 <- as.POSIXct ("2019-06-1 17:42")
+class(date2)
+```
+```{r}
+as.integer(date2)
+```
+
+luckily we have `lubridate` package that we will discuss later in the course that makes it easy to deal with dates. 
+
+#### Logical 
+Logical values in R are either `FALSE` or `TRUE`. Notice that they are both capital letters. In reality R represents `FALSE` as `0` and `TRUE` as `1`. We can verify that by the following commands 
+
+```{r}
+5 * TRUE 
+```
+```{r}
+8 * FALSE
+```
+
+```{r}
+TRUE + FALSE + TRUE + TRUE
+```
+
+```{r}
+class(TRUE)
+```
+
+Any logical operations will be evaluted as logical value 
+
+```{r}
+44 == 43
+```
+
+```{r}
+44 > 43
+```
+
+```{r}
+43 != 49
+```
+
+
+  - Vectors
+   Vectors are very special type in R. Think of them as arrays but only one dimension. Here is an example of how we create vectors. 
+   
+```{r}
+x <- c (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+class(x)
+```
+
+we can do operations so easily with vecotrs because R is a vectorized language 
+
+```{r}
+x * 10
+```
+
+There is another way to create vectors especially if we want to create a squence of numbers. 
+
+```{r}
+1:7
+```
+
+we can start from any number. we can even reverse the order
+```{r}
+-5:0
+10:0
+```
+
+we can do vector to vector operations so easily. Notice that vectors need to be the same size, otherwise R will recycle the shorter vector
+
+```{r}
+a <- 1:10
+b <- 10:1
+a-b
+```
+
+```{r}
+d <- 1:10
+f <- c(0,5)
+d + f 
+```
+
+logical operations are also possible on vectors 
+
+```{r}
+d > 5
+```
+
+we can name elements in the vector. Notice that we did not use `""` for the names. 
+
+```{r}
+a <- c(Hussain = 3, Mona = 5, Haya = 7)
+a
+```
+
+  
+  - Calling Functions
+
+function calling is similiar than most languages. you provide the function name followed by paranthesis 
+
+```{r}
+mean(a)
+```
+  
+  - Function Documentation
+There are many ways to get help to know more about any fucntion. for now we will learn only about `?` and `??` and later I will show you how to get more help. 
+
+```{r}
+?mean()
+```
+
+you use the `aprops` function if you are not sure about the function name exactly 
+
+```{r}
+apropos("mea")
+```
+
+  - Missing Data
+
+R represents missing data as `NA` and we can check a vector contains a missing data. This is very helpful as we will see later on in the course 
+
+```{r}
+missing_data <- c(1, 59, NA, 34, NA, 12)
+is.na(missing_data)
+```
+
+  
+  - Pipes 
+
+Pipes are very awesome feature in R. Although it does not come with R naturally but it is only a small package you can use called `magrittr`. Notice, things may start to look weird if you want to apply mathimatical operations. Also notice that some packages like `ggplot2` use different type of pipes 
+
+
+```{r, message= FALSE}
+library("magrittr")
+x <- 1:100
+
+x %>% sum() 
+
+x %>% sum() %>% `/`(.,2)
+```
+
+We will use pipes a lot later on the course. 
+
+## R beyond basics
+
+R beyond basics 
+  
+  - Other data Types (Data.Frames, Lists, Matrices, Arrays)
+  
+There other types of data that R is supporting like `Data.Frames` ,  `Lists` , `Matrecies` and `Arrays`. Each one has its own use and we will go through them all quickly to give you a flavor of what they do.   
+
+#### Data Frames
+
+Data Frames are just like excel sheets. It as rows and columns and each column has its own type 
+
+```{r}
+x <- c("apple","orange", "grapes", "Kiwi", "lemon")
+
+y <- c( 10L, 40L, 23L, 12L, 50L)
+
+# if we change one of the values to character the whole vector will be changed to character as expected 
+
+#y <- c( 10L, "40L", 23L, 12L, 50L)
+
+df <- data.frame(x,y, stringsAsFactors = FALSE)
+df 
+```
+
+we can change the name of the columns if we like using the `names` function. which by default will change the column names. we can add row names if we like. 
+
+```{r}
+names(df) <- c("fruits", "Quantity")
+df
+```
+
+
+```{r}
+rownames(df) <- letters[1:5]
+df
+```
+
+we can get some poperties of about the data frame such as the number of columns and rows. Also the dimension of the DF
+
+```{r}
+ncol(df)
+nrow(df)
+dim(df)
+```
+
+We can see the top of the data frame using the `head` and `tail` functions. This is very useful when we have big data and we want to see only a small sample of it. 
+
+```{r}
+head(df, n = 4) # we can use the top of the df 
+tail(df, n=3) # we can use the bottom of the df 
+```
+
+We can access any column using `$` sign. 
+
+```{r}
+df$fruits
+```
+
+or using the subscripts square brakets `[]` . 
+
+```{r}
+df[1:2,]
+
+df[,2]
+```
+
+#### lists 
+
+Often a container is needed to hold arbitrary objects of either the same type or varying types. R accomplishes this through lists. They store any number of items of any type. A list can contain all numerics or character s or a mix of the two or data.frames or, recursively, other lists.
+
+```{r}
+list(1,2,3)
+```
+```{r}
+
+list(c(1,2,3))
+
+```
+
+we can combine practically and data type into a list 
+
+```{r}
+lsts <- list(df, 1:10)
+```
+
+```{r}
+lsts[[1]]
+
+# what is the difference between [[]] and [] for lists 
+# [] keeps out put as a list while [[]] simplify it to what is inside the list
+```
+
+again we can use `names` function to keep life easier for us 
+```{r}
+names(lsts) <- c("dataframe","vector")
+lsts$vector
+```
+#### Matrices
+
+Matricies are similar to data frames except that the whole rows and columns need to be of the sames type. 
+
+```{r}
+as.matrix(df)
+```
+
+## Arrays 
+
+are multidimensional vectors. We rarely use them but they are useful to do complex mathimatics. Simply to narray in `NumPy` module in Python
+
+```{r}
+a <- array(1:20, dim = c(2,5,2))
+a
+a[1,1,2]
+```
+
+      
+  - Writing Functions
+  
+## Functions in R 
+
+Functions are really straight forward in R. All you need to know is the syntax 
+
+```{r}
+
+greetings <- function(name) {
+  
+  return(paste("Hello ", name))
+}
+
+greetings(name = "Hussain")
+# or we can provide arguments positionally 
+greetings("Hussain")
+
+```
+
+We can specify default values to function to we can ensure that the function does not fail if no arguments specified. 
+
+```{r}
+greetings <- function(name= "awesome person") {
+  
+  return(paste("Hello ", name))
+}
+
+greetings()
+```
+
+#### Extra arguments 
+
+There is a cool feature in R that allows you to provide extra arguments with out the need to repeat everything. 
+This is a slightly complicated example but I hope you see the idea behind it. 
+
+```{r}
+spell_name <- function(name,...) {
+  argument <-list(...)
+  if(length(argument) > 0 & !is.null(argument$check) & is.logical(argument$check)) {
+    check <- argument$check
+  if(check == TRUE){
+   spelling <- substr(name, nchar(name)-2, nchar(name))
+  return(paste0(". Just to make sure, last ", min(nchar(name),3) , " letters of  your name ",ifelse(nchar(spelling)>1,"are ","is "), toupper(spelling)))}
+  }
+  return(NULL)
+}
+
+
+greetings <- function(name= "awesome person",...) {
+  
+  return(paste0("Hello ", name, spell_name(name,...)))
+}
+
+greetings(name = "s", check = TRUE)
+
+
+
+```
+
+  - Control Statements & Loops  
+  
+#### Control Statements
+
+If you have programming background this should be really easy for you. We will go through the syntax really quickly because it is a straight forward proces. 
+
+```{r, results='asis'}
+a <- TRUE
+if (a == TRUE)
+{
+ print(a)
+}
+```
+
+We can use `else` execute statemets in case the condition is not met. 
+
+```{r}
+if(a != TRUE) {
+  print(a)
+} else {
+  print(!a)
+}
+```
+
+We also can use `else if` to put another condition 
+
+```{r}
+#a <- 34
+if( a == 3) {
+  print("a is 3")
+} else if (a == 1){
+  print("a is 1")
+}else {
+  print("not sure what a is")
+}
+
+```
+
+There is more concise way to do if statements if you have only one condition using the `ifelse`
+
+```{r}
+ifelse(1 == 3, TRUE, FALSE )
+```
+
+## Loops 
+
+Same thing with if statements. loops are very similar to other languages. There is nothing so special about loops, except for vectorized loops 
+
+```{r}
+for (i in 1:4) print(i)
+```
+
+Vectorized operation vs loops  
+
+```{r}
+fruits <- c("Apple", "Orange", "Grapes")
+wrd_len <- c(NA,NA,NA)
+names(wrd_len) <- fruits
+for (i in 1:length(fruits)){
+  wrd_len[i] <- nchar(fruits[i])
+}
+wrd_len
+
+
+
+```
+
+This is vectorized Operation
+
+```{r}
+  
+wrd_len <- c(NA,NA,NA)
+wrd_len <- nchar(fruits)
+names(wrd_len) <- fruits
+wrd_len
+```
+
+  - Reading Data into R
+      - CSV, Excel 
+## Rading CSV      
+
+There are couple of functions to read data we will focus on the `read.csv` because it is really common. Notice, `read.csv` converts strings into factors by default. In most cases this might not be what you want. You can change this behavior by setting `stringsAsFactors` to `FALSE` . Notice, R always save the output of this function as a data frame. There are many options we will explor some of them here.
+
+```{r}
+read.csv(file = "../datasets/Read_Data.csv", stringsAsFactors = FALSE, colClasses = c("character", "integer", "numeric", "factor")) 
+#%>%  apply(.,2, function(x){sum(is.na(x))})
+
+```
+
+#### Reading Excel
+
+In order to read Excel files we will need a package called `readxl`. It as a function called `read_excel` that is very useful. Notice, this package return a the data with class type `tibble`. You don't have to worry about it now as it acts just like data frame. 
+
+```{r}
+library("readxl")
+file_path <- "../datasets/Read_Data.xlsx"
+
+df <-read_excel(path = file_path)
+df
+```
+
+```{r}
+class(df)
+```
+
+- R Binary data
+
+#### Reading from R binary files. 
+We can save our work in binary and load it back to our envirnoment using `save` and `load` functions
+
+```{r}
+save(list=ls(),file = "../datasets/all_data.RData")
+rm(list = ls())
+```
+
+```{r}
+
+load("../datasets/all_data.RData")
+
+
+```
+      
+      
+##Graphing in R 
+
+#### Base Graphs 
+
+One of the most powerful features of R is graphing. R provide basic graphing tools. There is also an amazing package called `ggplot2` which makes graphing much easier in R. We will explore both. 
+
+```{r,message=FALSE, echo= FALSE}
+library("ggplot2")
+data(diamonds)
+```
+
+##### Histograms in basic graphs 
+
+One of the most helpful ways to visualize data in R is creating histograms. This enables us get a general idea of the distribution of the data. 
+
+```{r}
+hist(diamonds$price)
+# we can add more attributes to the histgram to make look pretty 
+
+hist(diamonds$carat, main="Carat Histogram", xlab="Carat")
+
+```
+
+##### Scatterplot in basic graphs 
+
+Scatter plots are used to visualize the relationship between two continenous variables. We can use `plot` which is a gneric ploting function. Note, `plot` is generic function which means it might yield different results with different inputs. 
+
+```{r}
+plot(price ~ carat, data=diamonds)
+```
+
+##### Boxplots in basic graphs 
+
+R has a nice function called `boxplot` for boxplots. The idea behind the boxplot is that the thick middle line represents the median and the box is bounded by the first and third quartiles. That is, the middle 50 percent of data (the Interquartile Range or IQR) is held in the box. The lines extend out to 1.5*IQR in both directions
+
+```{r}
+boxplot(diamonds$carat)
+```
+
+##Graphing in R 
+
+#### `ggplot2` package
+
+ggplot2 package is a powerfull visualizing package. It was built based on the Grammer of Graphics book by Leland Wilkinson. The gerneral idea behind this package is that you build your visualization layer by layer. 
+
+##### Histograms in `ggplot2`
+
+Let's try to make the histogram again 
+
+```{r}
+ggplot(mapping = aes(x = price), data = diamonds) 
+```
+
+
+##### 

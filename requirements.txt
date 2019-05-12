@@ -1,0 +1,19 @@
+
+req_packages <- c("devtools",
+		"broom",
+ 		"modelr",
+		"recipes",
+		"ipred",
+		"learnr",
+		"nycflights13",
+		"Lahman", 
+		"animation",
+		"tidyverse",
+		"here",
+		"RSQLite",
+		"ggplot2",
+ 		"caret")
+
+install.packages(req_packages)
+
+

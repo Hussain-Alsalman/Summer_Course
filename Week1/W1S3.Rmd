@@ -1,0 +1,61 @@
+---
+title: "Week 1 Session 3"
+author: "Hussain Alsalman"
+date: "April 29, 2019"
+output: 
+  ioslides_presentation: default
+  html_document: default
+---
+## Foundations of R Programming 
+
+What is R?
+
+R is a free language and environment for statistical computing and graphics. You can perform a variety of tasks using R language. Some are as follows 
+
+- Exploring and Manipulating Data
+- Building and validating predictive models
+- Applying machine learning and text mining algorithms
+- Creating visually appealing graphs
+- Building online dynamic reports or dashboards
+
+
+## Command Line Interface for R. 
+
+- R is an engine that can be run through CLI.
+- R comes with simple GUI but it is very premitive. 
+- You can run multiple instances of R with no problem. 
+
+Let's learn how to 
+- Set our working directory 
+- Save our workspace 
+- Load our workspace 
+- Display existing objects 
+- Remove objects 
+- Save our history 
+
+
+## R Basics
+
+Let's learn how to 
+  - Basic Math 
+  - Variables 
+  - Data Types
+  - Vectors
+  - Calling Functions
+  - Function Documentation 
+  - Missing Data
+  - Pipes 
+  
+## R beyond basics
+
+R beyond basics 
+    - Other data Types (Data.Frames, Lists, Matrices, Arrays)
+    - Writing Functions
+    - Control Statements & Loops  
+    - Reading Data into R
+        - CSV, Excel 
+        - R Binary data
+    - Graphing in R 
+        - Base Graphs 
+        - ggplot2
+        

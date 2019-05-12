@@ -1,0 +1,422 @@
+---
+title: "Week 1 Session 1"
+author: "Hussain Alsalman"
+output:
+  ioslides_presentation: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("here")
+library("ggplot2")
+library("tidyverse")
+library("animation")
+```
+
+
+## Welcome to the Data Science World {.build}
+This course is divided into three Parts
+
+- **Part 1:** Getting Started with R for Data Science 
+    - Introduction to Data Science. 
+    - CRISP-DM
+    - Data Scientist's Tools.
+    - R Programming Language.
+    
+- **Part 2:** Data Wrangling & Statistics
+    - Reading Data from different Sources. 
+    - Handling inconsistent,missing Data & Anomolies
+    - Data Normalization & Transformation
+    - Dimension Reduction
+    - Intro to Statistics
+    
+## Welcom to DS.. Continue {.build}
+- **Part 3:** Modeling and Evaluation
+    - Supervised Learning
+        - linear Regression 
+        - logestic Regression 
+        - Decision Trees
+        - Random Forest
+    - Unupervised Learning
+        - K-NN Clustering
+        - K-Mean Clustering
+        - Hierarchical Clustering
+    - Association Rules
+    
+## Data Are everywhere 
+
+```{r, out.width='100%'}
+knitr::include_graphics(path = here("Images", "Session1.gif"))
+```
+
+ 
+## Why Study Data Science?
+
+**Dell Sales Reps Productivity**
+
+
+| Problem 	| Sales reps spend a lot of time doing online research and gathering information from disparate sources before they actually engage with a sales prospects 	|
+|-----------	|----------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Data Used 	| LinkedIn and other public sources available on the Web 	|
+| Solution 	| Predictive model called 'Lattice Engines' 	|
+| Benefits 	| Productivity Increased by 100% 	|
+
+[Read full story here](https://blogs.wsj.com/cio/2012/12/05/how-dell-predicts-which-customers-are-most-likely-to-buy/)
+
+----
+
+**Massachusetts Medicaid fraudulent Claims**
+
+| Problem 	| There were many fraudulent medicaid claims that has been costing Massachusetts State millions of dollars    	|
+|-----------	|----------------------------------------------------------------------------------------------------------------------------------------	|
+| Data Used 	| Massachusetts’ Medicaid Management Information System (MMIS) and analyzes public and other Commonwealth data stored in a data warehous 	|
+| Solution 	| Predictive model called 'NetReveal' 	|
+| Benefits 	| Recovered 2 million dollars in first six months  	|
+
+[Read full story here](https://gcn.com/articles/2014/02/24/masshealth.aspx)
+
+----
+
+**IBM & Epic Predective Model saves lives**
+
+| Problem 	| Carilion Clinic will have to spend years to go over their data to identify patients with risk of heart failure. By then it will be too late 	|
+|-----------	|---------------------------------------------------------------------------------------------------------------------------------------------	|
+| Data Used 	| IBM’s data warehouse, and Epic electronic health records 	|
+| Solution 	| Watson predictive model and natural language processing 	|
+| Benefits 	| Identified 8,500 patients who are at risk of congestive heart failure within one year  	|
+
+[Read full story here](https://www.forbes.com/sites/zinamoukheiber/2014/02/19/ibm-and-epic-apply-predictive-analytics-to-electronic-health-records/#35d353e93316)
+
+----
+
+**President Obama’s campaign**
+
+| Problem 	| Obama Campaign Staff needed to focus on the people who are more likely to vote and make sure they vote  	|
+|-----------	|------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Data Used 	| Web, social media and collected Campaign Offices data 	|
+| Solution 	| Complex micro-targeting model 	|
+| Benefits 	| Predicted that Obama would receive 56.4% of the vote; the Obama share of the actual vote was 56.6% in Ohaio. Eventually made Obama president.  	|
+
+[Read full story here](https://www.technologyreview.com/s/509026/how-obamas-team-used-big-data-to-rally-voters/)
+
+## What is Data Science?
+ 
+**Data Science** 
+
+is a multi-disciplinary field that uses **scientific methods**, processes, **algorithms** and systems to **extract knowledge** and insights from structured and unstructured data.  ~ _[Wikipedia](https://en.wikipedia.org/wiki/Data_science)_
+
+## What are the types of Data?
+
+- Structured Data 
+    - Data that has pre-defined format. We mainly refer to the data that can be stored in tabular format. 
+    
+```{r, out.width='80%', fig.align='center'}
+knitr::include_graphics(path = here("Images","Pivot-Table-Data-Source-Structure.png"))
+```
+    
+
+## What are the types of Data?
+
+- Unstructured Data 
+   - Those include everything else, from texts on websites and social media to uploaded videos and music. 
+  
+```{r, out.width='80%', fig.align='center'}
+knitr::include_graphics(path = here("Images","Screen-Shot-2016-08-24-at-1.22.53-PM.png"))
+```
+  
+## Structured VS Unstructured 
+
+```{r, out.width='80%', fig.align='center'}
+knitr::include_graphics(path = here("Images","structured-unstructured.jpg"))
+```
+
+
+## Structured VS Unstructured 
+
+Dealing with unstructured data is beyond the scope of this course. So we will focus on Structure data in this course.
+
+
+## Are all data equal?
+
+The answer is : NO
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","level_of_measurements.png"))
+```
+
+
+## Are all data equal?
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","summary-of-data-types-and-scales-768x405.png"))
+```
+
+
+## Tasks of Data Scientist
+
+Data Scienctists are invlolved in a mainly 5 tasks in their daily work. They try to 
+
+- Describe the data. 
+- Estimate or predict it. 
+- Classify it. 
+- Cluster it. 
+- Idenfity Association within it.
+
+We will explore those 5 tasks in the next slides in details. 
+
+## Tasks of Data Scientist
+
+- Description
+    - This involved conducting Exploratory Analysis & Descriptive statistics.
+    - The data scientist is only  summrizing the data. No interpertatins is done at this task level. 
+
+
+---- 
+
+<h3><b>
+Example of Description 
+</b></h3>
+
+Here is a students Data that includes GPA and GRE scores, rank of the school they applied to and whether they got admited or not.  
+
+```{r}
+### <b>
+df <- read.csv(file = here("datasets", "binary1.csv"))
+df$admit <- factor(x= df$admit,levels =  c(1, 0), labels = c("YES", "NO"))
+df$rank <- ordered(df$rank, levels=c(1,2,3,4))
+summary(df)
+### </b>
+
+```
+
+
+
+## Tasks of Data Scientist
+
+- Estimation & Prediction
+    - We use _categorical_ or/and _numerical_ predictors to predict/estimate _numerical_ target variable
+    - In this task we try to uncover trends and understand the relationship between the variables.
+    - If we use this knowledge and extend it to new data sets, then we are trying to predict values. 
+
+
+----
+<h3><b>
+Estimation & Prediction
+</b></h3>
+
+In this standard linear regression model. We visualize the relationship between GPA & GRE. We also can exrapolate the model and make predictions.  
+
+```{r, out.width= "60%", fig.align='center'}
+
+df %>% ggplot(aes(x = gre, y = gpa)) + geom_point()  + stat_smooth(method = "lm", col = "red", se = FALSE)
+```
+
+---
+
+- Classification
+    - We use _categorical_ or/and _numerical_ predictors to predict/estimate _categorical_ target variable
+  
+    ```{r, out.width= '60%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","knn_ani.gif"))
+```
+
+    
+---
+
+- Clustering
+    - Grouping of records, observations, or cases into classes of similar objects. No need for target variable
+    
+    ```{r, out.width= '60%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","kmean_ani.gif"))
+```
+
+---
+- Association. 
+    - Finding which attributes "go together." Most prevalent in the business world, where it is known as market basket analysis
+    
+
+## CRISP-DM
+CRISP-DM : Cross-industry standard process for data mining
+
+```{r, out.width="60%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "CRISP-DM_Process_Diagram.png"))
+```
+
+## CRISP-DM
+
+<ol>
+<li> Business/Research Understanding Phase
+<ul>
+    - First, clearly define the project objectives and requirements
+      in terms of the business or research unit as a whole.
+    - Then, translate these goals and restrictions into the 
+      formulation of a data science problem definition.
+    - Finally, prepare a preliminary strategy for achieving 
+      these objectives
+</ul>  
+
+
+## Business/Research Understanding Phase
+
+```{r, out.width="60%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "Alice_wonderland.jpg"))
+```
+
+
+## Business Understanding Example 
+
+  - An oil and gas company is seeking to reduce the operation fatalities. 
+      - Classification Problem.
+  - A retail store want to identify their costumers market segments.
+      - Clustering Problem. 
+
+
+## CRISP-DM
+
+<ol start = 2>
+<li>Data Understanding Phase
+<ul>
+    - First, collect the data
+    - Then, use exploratory data analysis to familiarize yourself
+      with the data, and discover initial insights.
+    - Evaluate the quality of the data.
+    - Finally, if desired, select interesting subsets that 
+      may contain actionable patterns.
+</ul>
+
+## Data Understanding Details. 
+
+In order to understand data science, it is important to understand the nature of databases, data
+collection and data organization. 
+
+We need to understand the differences between **databases**, **data warehouses**, and **data sets**.
+
+What is common among them is that they all have **rows** and **columns**. 
+
+## Data Understanding Details. 
+
+A **database** is an organized grouping of information within a specific structure.
+
+
+```{r, out.width="40%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "database_structure.png"))
+```
+
+The tables are related by the single column they have in common: Owner_ID. By relating tables to one another, we can reduce redundancy of data and improve database performance. The process of breaking tables apart and thereby reducing data redundancy is called **normalization**
+
+## Data Understanding Details. 
+
+Most relational databases which are designed to handle a high number of reads and writes (updates
+and retrievals of information) are referred to as **OLTP** (online transaction processing) systems
+
+It is not useful to analyze that **OLTP** data directly. We need to **query** the tables to get meaningful data. Queries are usually written in a language called SQL 
+(Structured Query Language; pronounced ‘ sequel’)
+
+Querying OLTP is usually very intensive and time consuming on even the most robust computers.
+That's why we use **Data warehouse**
+
+## Data Understanding - Practical Example 
+
+Northwind Database 
+
+```{r, out.width="60%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "NorthWindOrderDetails.png"))
+```
+
+
+## Data Understanding Details. 
+
+A **data warehouse** is a type of large database that has been denormalized and
+archived. **Denormalization** is the process of intentionally combining some tables into a single
+table in spite of the fact that this may introduce duplicate data in some columns (or in other words,
+attributes). Systems that perform this process are called OLAP (online analytical processing).
+
+```{r, out.width="40%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "denormalized_data.png"))
+```
+
+## Data Understanding Details. 
+
+Becauase we data where houses are huge, we usually don't work on all of it at once. We pick a subset from this large table. Those subsets are called  **Data Sets**.
+
+a subset of data that is designed to a business function is called **Data Mart**. 
+
+
+
+## Data Understanding Details - Summary
+
+```{r, out.width="80%", fig.align='center'}
+knitr::include_graphics(path = here("Images", "Data_Warehouse_AU_v2.png"))
+```
+
+
+## CRISP-DM
+
+<ol start = 3>
+<li>Data Preparation Phase
+<ul>
+    - This labor-intensive phase covers all aspects of preparing
+      the final data set, which shall be used for subsequent phases,
+      from the initial, raw, dirty data.
+    - Select the cases and variables you want to analyze,
+      and that are appropriate for your analysis.
+    - Perform transformations on certain variables, if needed.
+    - Clean the raw data so that it is ready for the modeling tools
+</ul>
+
+## CRISP-DM
+
+<ol start = 4>
+<li> Modeling Phase
+<ul>
+    - Select and apply appropriate modeling techniques.
+    - Calibrate model settings to optimize results.
+    - Often, several different techniques may be applied for
+      the same data mining problem.
+    - May require looping back to data preparation phase,
+      in order to bring the form of the data into line with
+      the specific requirements of a particular data mining technique.
+<ul>
+
+
+
+## CRISP-DM
+<ol start = 5>
+<li>Evaluation Phase
+<ul>
+    - The modeling phase has delivered one or more models. These models
+      must be evaluated for quality and effectiveness, before we deploy
+      them for use in the field.
+    - Also, determine whether the model in fact achieves the objectives
+      set for it in phase 1.
+    - Establish whether some important facet of the business or
+      research problem has not been sufficiently accounted for.
+    - Finally, come to a decision regarding the use of the
+      data mining results
+</ul>
+
+
+## CRISP-DM
+<ol start = 6>
+<li>Deployment Phase 
+<ul>
+    - Model creation does not signify the completion of the project.
+      Need to make use of created models..
+    - Example of a simple deployment: Generate automated reports a report
+    - Example of a more complex deployment: 
+      Implement a parallel data mining process in another department.
+    - Finally, come to a decision regarding the use of the
+      data mining results
+</ul>
+
+
+## CRISP-DM in the real world
+
+[Job Readiness in Ireland](https://infonomics-society.org/wp-content/uploads/iji/published-papers/volume-8-2015/A-Case-Study-of-Evaluating-Job-Readiness-with-Data-Mining-Tools-and-CRISP-DM-Methodology.pdf)
+
+
+## Homework 
+ - [Install R](https://cloud.r-project.org/) 
+ - [Install RStudio](https://www.rstudio.com/products/rstudio/)
+ - [Install Git](https://git-scm.com/)

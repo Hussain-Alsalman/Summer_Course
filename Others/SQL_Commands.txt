@@ -1,0 +1,40 @@
+
+## Simple SQL Commands
+
+
+
+
+## Long and Complex  SQL Commands 
+
+SELECT "C"."CustomerID",
+	"C"."Country",
+	"C"."ContactName", 
+	"O"."OrderID",
+	"O"."OrderDate",
+	"O"."ShipVia",
+	"O"."ShipName",
+	"O"."ShipCity",
+	"OD"."ProductID",
+	"OD"."UnitPrice", 
+	"OD"."Quantity", 
+	"P"."ProductName", 
+	"P"."CategoryID", 
+	"P"."SupplierID", 
+	"S"."CompanyName", 
+	"S"."Country", 
+	"CT"."CategoryName", 
+	"CT"."Description" 
+
+FROM "Customers" "C" 
+	JOIN "Orders" "O" 
+		ON "C"."CustomerID" = "O"."CustomerID" 
+	JOIN "Order Details" "OD"
+		ON "O"."OrderID" = "OD"."OrderID" 
+	JOIN "Products" "P" 
+		ON "OD"."ProductID" = "P"."ProductID" 
+	JOIN "Suppliers" "S" 
+		ON "P"."SupplierID" = "S"."SupplierID" 
+	JOIN "Categories" "CT" 
+		ON "P"."CategoryID" = "CT"."CategoryID"
+
+

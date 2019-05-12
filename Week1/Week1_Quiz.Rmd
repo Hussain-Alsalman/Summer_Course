@@ -1,0 +1,55 @@
+---
+title: "Week1 Quiz"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+source("www/week1_check_solutions.R")
+```
+
+
+## Data Science Concepts
+
+### Multiple Choice Quiz 
+
+```{r q1}
+  question("What is the definition of Data Science?",
+    answer("multi-disciplinary field that uses scientific methods and algorithms to extract knowledge", correct = TRUE),
+    answer("multi-disciplinary field that uses statistical methods to predict the target values"),
+    answer("It is a computer science field that focus on algorithms and models to gain insight"),
+    answer("data science is not actually a science"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+
+
+## Simple Operators
+
+
+
+
+Write the R code required to add two plus two:
+
+```{r tpt, exercise=TRUE, exercise.checker = check_ex1, exercise.lines =1}
+
+```
+
+```{r tpt-check}
+check_ex1(  label,
+  user_code,
+  solution_code,
+  check_code,
+  envir_result,
+  evaluate_result,
+  envir_prep,
+  ...)
+```

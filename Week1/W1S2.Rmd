@@ -1,0 +1,86 @@
+---
+title: "Week 1 Session 2"
+author: "Hussain Alsalman"
+output:
+  ioslides_presentation: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("here")
+library("ggplot2")
+library("tidyverse")
+```
+
+
+## Welcome back to The Course
+
+Any questions about last session? 
+
+----
+
+<h2>By the end tonight session you will</h2>  
+</br>
+
+- Learn some basic commands using git. 
+- Create you Github account and push your "hello world" repo.
+- Learn how to use Rstudio.
+- Install few R pacakges that will make your life easier.
+- Learn the foundation of R Programming (Tonight and next session). 
+
+
+## By now you should have done the following. 
+
+  - Installed R ![](www/Tick_Mark_Dark.png){ width=25px height=25px } 
+  - Installed RStudio ![](www/Tick_Mark_Dark.png){ width=25px height=25px } 
+  - Downloaded all Course Material ![](www/Tick_Mark_Dark.png){ width=25px height=25px } 
+
+
+## Basic Git Commands ~ Demo ~
+
+- Installing Git Command 
+- Comman Git Commands 
+
+---------- -------  ----------         ------  -----------
+init       clone    commit             add     status     
+checkout   diff     branch             config  push       
+pull       fetch    remote add origin  rebase  .gitignore 
+---------- -------  ----------         ------- -----------
+
+- Setting up Github Account
+
+Note : You will need this for your Project. 
+
+## Life cycle of your files in Git
+
+```{r, out.width='100%'}
+knitr::include_graphics(path = here("Images", "Life_cycle_of_the_status_files.png"))
+```
+
+
+## Options to Customize log command 
+
+```{r, out.width='56%', fig.align='center'}
+knitr::include_graphics(path = here("Images", "formatting_Optios_git.png"))
+```
+
+
+## Practical Example 
+
+Apply what we learned.
+
+- Create a directory named "Hello_World" on your machine 
+- Initiate a git repo for this directory 
+- Make at least 3 commits with informative messages
+- Create branch named "new feature" and make at least 2 commits 
+- Merge "new feature" branch with "master" branch 
+
+
+## Homeworks 
+
+- Read the this [cheatsheet](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf) 
+- Experement with Github and add your friends for collaboration. 
+ 
+
+
