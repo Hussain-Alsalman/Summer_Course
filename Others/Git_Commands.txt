@@ -1,0 +1,173 @@
+#Let's create a playground folder on Desktop
+cd ~/Desktop/
+mkdir play_ground
+cd play_ground/
+
+# Create a file named "hello_world"
+echo "Hello World" >> hello_world.txt
+ls
+nano hello_world.txt
+
+
+
+# Initializing a Repository in an Existing Directory
+git init
+git commit -m "First commit"
+git add . 
+
+
+
+# Recording Changes to the Repository
+#====== Display the life_cycle of the files in working directory
+
+
+# Checking the Status of Your Files
+
+git status
+
+	# let's craete new file called "README"
+	echo "This is my hello world project" > README
+	git status
+
+# Tracking New Files 
+git add README
+git status
+
+
+#Staging Modified Files
+	# make new changes to hello_world
+	nano hello_world.txt
+	git status
+
+	# You notice that we have two copies from hello_world.txt. One is staged and the other is not.
+	git add hello_world.txt
+
+git status
+
+
+# Short Status
+	# we can get short status for our changes 
+	git status -s 
+
+#Ignoring Files
+	# We can tell git to ignore certain files but adding those files in .gitignore file. 
+	echo "This is just random unimportant file" >  random_unimportant_file.txt	
+	git status
+	# let's tell git to ignore this file.  	
+	nano .gitignore 
+	
+	git status 
+
+
+#Viewing Your Staged and Unstaged Changes
+	# There is a command to see what has changed. git diff with no argument shows the difference between working directory and staged files.
+	git diff 
+	# We can compare what we staged with what was in our last commit 
+	git diff --staged 
+
+#Committing Your Changes 
+	# commiting with out commit message will open your editor to enter your message 
+	git commit 
+	# we can add the message directly with -m option 
+	git commit -m "We write our messege here"
+
+#Skipping the Staging Area
+	# We can skipp the whole staging area altogether but adding the -a option with commit command
+	git commit -am "We are adding everything and committing directly, skipping the staging area"
+
+#Viewing the Commit History
+	# We can view our commits history 
+	git log 
+	# We can also see the what changed in each commit by adding -p option. We can also add a number to limit the lines
+	git log -p -2
+	# We can get a summary for about the changes in each commit with --stat option
+	git log --stat
+	# We can customize our log with few options and tags 
+	git log --pretty=format:"%h - %an, %ar : %s"
+	git log --pretty=format:"%h %s" --graph
+
+##Undoing Things
+	
+	# If we forgot to add a file and committed too early, we can use the git commit --amend. We  
+	git add hello.txt	
+	git commit --amend
+
+	#Unstaging a Staged File
+	git rest
+	
+	#Unmodifying a Modified File
+	nano hello.txt
+	git status 
+	git checkout --hello.txt 
+
+
+
+
+# Creating new Branch and make new commits
+git checkout -b new_idea
+nano hello.txt 
+git status
+git diff
+git commit -m "Great new idea"
+git commit -am "Great new idea"
+
+## Go back to master 
+git checkout master 
+git branch
+nano hello.txt 
+git status
+git diff
+git add hello.txt 
+git status
+git commit -m "Another great idea"
+git merge new_idea 
+nano hello.txt 
+git status
+git commit -m "All ideas are great"
+git commit -am "All ideas are great"
+git log 
+git log --graph --oneline --pretty 
+git log --graph --oneline --pretty --all
+git log --graph --oneline --all
+git branch 
+git log --graph --oneline --all --short
+git log --help
+git log --graph --oneline --all --decorate
+git branch
+git branch -d new_idea 
+git log --graph --oneline --all --decorate
+git checkout -b hussain_ideas
+git checkout -b reem_ideas
+git checkout -b fatimah_ideas
+git checkout master 
+git status
+git add hello.txt 
+git commit -m "creating sections for all team members"
+git checkout hussain_ideas 
+nano hello.txt 
+git merge master 
+git checkout reem_ideas 
+git merge master 
+git checkout fatimah_ideas 
+git merge master 
+git log --graph --oneline --all --decorate
+nano hello.txt 
+git commit -am "I got new ideas friendsnano hello.txt "
+git checkout hussain_ideas 
+nano hello.txt 
+git commit -am "I too got new ideas"
+git checkout fatimah_ideas 
+nano hello.txt 
+git checkout reem_ideas 
+nano hello.txt 
+git commit -am "My idea is no ideas here"
+git checkout master 
+git log --graph --oneline --all --decorate
+git cherry-pick 5103d21 b0fe96a
+git log --graph --oneline --all --decorate
+nano hello.txt 
+git branch -d reem_ideas hussain_ideas fatimah_ideas 
+git branch -D reem_ideas hussain_ideas fatimah_ideas 
+git log --graph --oneline --all --decorate
+nano hello.txt 
+ 
