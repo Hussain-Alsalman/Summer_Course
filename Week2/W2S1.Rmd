@@ -1,0 +1,21 @@
+---
+title: "Week 2 Session 1"
+author: "Hussain Alsalman"
+output:
+  ioslides_presentation: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("here")
+library("ggplot2")
+library("tidyverse")
+```
+
+
+## Welcome to Week 2 
+
+We we learned so far 
+
+- We learn a lot about the 

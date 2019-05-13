@@ -6,6 +6,15 @@ output:
   ioslides_presentation: default
   html_document: default
 ---
+
+## By the end of tonight Session you will 
+
+- Get very familiar with R programming and syntax 
+  - All basic R 
+  - Beyond Basics 
+- Get introduced to ggplot2 
+  - learn the basic philosophy behind this great package
+
 ## Foundations of R Programming 
 
 What is R?

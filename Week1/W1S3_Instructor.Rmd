@@ -619,7 +619,6 @@ load("../datasets/all_data.RData")
       
       
 ##Graphing in R 
-
 #### Base Graphs 
 
 One of the most powerful features of R is graphing. R provide basic graphing tools. There is also an amazing package called `ggplot2` which makes graphing much easier in R. We will explore both. 
@@ -657,7 +656,7 @@ R has a nice function called `boxplot` for boxplots. The idea behind the boxplot
 boxplot(diamonds$carat)
 ```
 
-##Graphing in R 
+
 
 #### `ggplot2` package
 
@@ -668,8 +667,51 @@ ggplot2 package is a powerfull visualizing package. It was built based on the Gr
 Let's try to make the histogram again 
 
 ```{r}
-ggplot(mapping = aes(x = price), data = diamonds) 
+ggplot(data = diamonds) + geom_histogram(aes(x = carat))
+```
+
+Here you notice that we are building the plot piece by piece using the pipe '+'. 
+
+##### Boxplot in `ggplot2`
+
+```{r}
+ggplot(diamonds, aes(y = carat)) + geom_boxplot()
+```
+
+##### `ggplot` Philosophy 
+
+###### Essential elements of every ggplot graph
+  - Data 
+  - Aesthetic Mapping 
+  - One or more Layer (basically the type of graph you are interested in)
+  
+A simple Example will be the following 
+
+```{r}
+# Here we included the data "mpg". 
+# We also specified the aesthetic part as  x= engine size (displacement of gasoline in liters), y = Miles on the highway per gallon
+# Finally we specified what layer we are interested in. 
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+
+g1 <-ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+###### Other attributes in ggplot2 `shape` and `color` and `size` 
+
+```{r}
+# In the previous example we created  simple scatterplot, not let's build on that graph 
+# Now we will just add color and shape aesthetics 
+# then we will highlight certain area of the graph 
+# then we will add the model name of the cars we are interested in
+# We can even change theme 
+
+g1 + aes(color = manufacturer, shape = drv) +
+  geom_rect(aes(xmin =1,xmax = 2.5, ymin =20, ymax= Inf),color = 'gray' ,fill = "gray", alpha = 0.1, show.legend = FALSE) +
+  geom_text(mpg[which(mpg$hwy > 20 & mpg$displ <= 2.5),], mapping = aes(x = displ, y = hwy, label = model), show.legend = FALSE) +
+  theme_bw() + geom_path(data = mpg[which(mpg$model == 'civic'),])
 ```
 
 
-##### 
+

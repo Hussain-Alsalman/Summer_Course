@@ -21,9 +21,12 @@ This course is divided into three Parts
 - **Part 1:** Getting Started with R for Data Science 
     - Introduction to Data Science. 
     - CRISP-DM
-    - Data Scientist's Tools.
     - R Programming Language.
-    
+    - Data Scientist's Tools (Git + Github + Rstudio).
+    - Brief introduction to Data Visualization
+
+## Welcom to DS.. Continue {.build}
+
 - **Part 2:** Data Wrangling & Statistics
     - Reading Data from different Sources. 
     - Handling inconsistent,missing Data & Anomolies
