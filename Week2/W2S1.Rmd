@@ -14,8 +14,98 @@ library("tidyverse")
 ```
 
 
-## Welcome to Week 2 
+## Welcome to Week 2 {.build}
 
-We we learned so far 
+Recap what we learned from Week 1 
 
 - We learn a lot about the 
+
+
+
+## Intro to Statistics {.build}
+
+Before we start, we need to mention that Statistics is divided mainly into two parts. 
+
+  - Descriptive Statistics (_Course Focuse_)
+    - This branch focuses on describing the Data without making and conclusions 
+    
+  - Inferential Statistics 
+    - This branch is all about making conclusions. It takes sample from the population and try to make statistical tests to generalize the idea. 
+    
+
+## Types of data {.build}
+
+In order to be able to describe the data we need to know their types first.
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","Data_Types.jpg"))
+```
+
+## Catagorical Data {.build}
+
+In many cases especially in classificaiton peroblem this is usually our target variable.
+
+We can describe categorical data by 
+
+- Counts 
+- Percentages
+
+However, they are very useful in analytical taks such as 
+
+- Grouping
+- Filtering 
+
+# Demo
+
+M&M samples.
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","M&M_spokescandies.png"))
+```
+
+## Quantative Data {.build}
+
+Those are excat variables and open doors for many statistical analysis. 
+
+We can describe quantative data by 
+
+- Measure of cerntrality 
+    - Mean
+    - Median 
+    - Mode 
+
+- Measure of Variability 
+    - Range 
+    - Interquartile Range (IQR)
+    - Standard Deviation
+    - Variance 
+
+---- {.build}
+- Shape
+    - Kurtosis 
+    - Skewness 
+    - Normal Curve or Bell Curve
+    
+- Outliers
+
+# Demo
+
+## Data Preprocessing {.build}
+
+Why do we preprocess data?
+
+- Fields that are obsolete or redundant
+- Missing values
+- Outliers
+- Data in a form not suitable for the machine learning models;
+- Values not consistent with policy or common sense.
+
+## Common Tasks in Data preprocessing 
+
+- Data cleaning
+- Handling missing data 
+- Identify misclassificaitons 
+- Graphically identify outliers 
+- Transformation data _to work better with ML models_
+- Normalize the data
+

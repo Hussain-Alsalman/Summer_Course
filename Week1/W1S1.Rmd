@@ -142,7 +142,7 @@ Dealing with unstructured data is beyond the scope of this course. So we will fo
 
 ## Are all data equal?
 
-The answer is : NO
+The answer is : NO. There are different levels
 
 ```{r, out.width= '100%' ,fig.align='center'}
 knitr::include_graphics(path = here("Images","level_of_measurements.png"))

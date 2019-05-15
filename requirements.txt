@@ -12,7 +12,9 @@ req_packages <- c("devtools",
 		"here",
 		"RSQLite",
 		"ggplot2",
- 		"caret")
+ 		"caret", 
+ 		"e1071", 
+ 		"ODB")
 
 install.packages(req_packages)
 
