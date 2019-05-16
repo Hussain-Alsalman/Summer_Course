@@ -1,6 +1,10 @@
-# Data Cleaning 
+###-----Helping Functions ---------####
+library('here')
+source(file = here('R_Code', 'help_Functions.R'))
 
-# We will explain the Data cleaning by going through this dummy example 
+# Data Cleaning -------------------------------------
+
+#####--We will explain the Data cleaning by going through this dummy example 
 
 # Can you find any issues with this data set?
 df <- tribble(
@@ -51,3 +55,133 @@ df <- tribble(
 # That's why having domain expert is important 
 
 
+# Handling missing data -------------------------------------------------
+
+#Data Background 
+#The data set consists of information about 261 automobiles manufactured in the 1970s and 1980s,
+#including gas mileage, number of cylinders, cubic inches, horsepower,
+
+# Reading Data 
+
+library("here")
+
+file_path <- here("datasets", "example_cars.txt")
+
+df <- read.table(file = file_path, sep = ',', stringsAsFactors = FALSE,header = TRUE)
+
+#let's assume two values are missing 
+
+df[2,"cubicinches"] <- ""
+df[4,"brand"] <- ""
+# lets examine the first 10 rows 
+
+head(df, 5)
+
+# We can either remove the records  with missing values 
+remove_df <- df[c(-2,-4),]
+head(remove_df,5)
+
+# or we replace it .. 
+# Common Criteria For Replacement -----------------------------------------
+# 1. Replace the missing value with some constant, specified by the analyst.
+# 2. Replace the missing value with the field mean (for numeric variables) or the
+# mode (for categorical variables).
+# 3. Replace the missing values with a value generated at random from the observed distribution of the variable.
+# 4. Replace the missing values with imputed values based on the other characteristics of the record.
+
+#lets examine the first three 
+# 1. Replace the missing value with some constant, specified by the analyst.
+
+constant_df <- df
+head(constant_df,5)
+
+constant_df[2,3] <- 0
+constant_df[4,8] <- "Missing"
+
+# programatically 
+
+constant_df$cubicinches[which(constant_df$cubicinches == "")] <- 0
+constant_df$brand[which(constant_df$brand == "")] <- "Missing"
+
+head(constant_df,5) # Important if the analyst want to further analyze the data 
+
+
+# 2. Replace the missing value with the field mean (for numeric variables) or the
+# mode (for categorical variables).
+
+mean_df <- df
+head(mean_df,5)
+
+# Before we calculate the mean, we need to make sure we have the write format for each column
+str(mean_df)
+mean_cubicinches <-  round( mean(as.numeric(mean_df$cubicinches), na.rm = TRUE) , 0)
+
+# We now Impute mssing values with the mean 
+mean_df$cubicinches[which(mean_df$cubicinches == "")]  <-  mean_cubicinches
+
+# if we examine the distribution .. the median might be better 
+get_hist(as.numeric(df$cubicinches), ant_nudge = 20)
+median_cubicinches <- median(as.numeric(mean_df$cubicinches), na.rm = TRUE)
+
+# For categorical values we can use the mode 
+mean_df$brand[which(mean_df$brand == "")] <- get_mode(mean_df$brand)
+
+
+# 3. Replace the missing values with a value generated at random from the observed distribution of the variable.
+rand_df <- df 
+# we set the seeds to make sure we have the same results - only for the purposes of this lecture.
+set.seed(1)
+rand_cubicinches <- rnorm(1, mean = mean_cubicinches, sd = sd(as.numeric(df$cubicinches), na.rm = TRUE))
+
+
+head(rand_df)
+rand_df$cubicinches[which(rand_df$cubicinches == "")] <- round(rand_cubicinches,0)
+head(rand_df)
+
+# for categorical we select it from random sampling with probability in mind 
+
+prb <- prop.table(table(rand_df$brand, exclude = ""))
+rand_brand <- sample(size = 1,x = names(prb),prob = as.vector(prb))
+
+
+
+# Identifying Missclasifications ------------------------------------------
+
+mc_df <- df 
+# let's add missclassification in the data 
+set.seed(1)
+mc_idx_us <- sample(2, x = which(mc_df$brand =="US"))
+mc_idx_er <- sample(1, x = which(mc_df$brand =="Europe"))
+mc_df$brand[mc_idx_us] <- "USA"
+mc_df$brand[mc_idx_er] <- "France"
+
+#lets first look into the structure of our data using str() 
+str(mc_df)
+
+#Let's see how many categories we have in Brands 
+table(mc_df$brand)
+
+#Let's fix them 
+
+mc_df$brand[which(mc_df$brand =="USA")] <- "US"
+mc_df$brand[which(mc_df$brand =="France")] <- "Europe"
+
+table(mc_df$brand)
+
+
+
+
+
+# Graphical Methods to identify outliers ----------------------------------
+
+# Reading Data 
+
+library("here")
+
+file_path <- here("datasets", "outlier_cars.txt")
+
+df <- read.table(file = file_path, sep = ',', stringsAsFactors = FALSE,header = TRUE)
+
+# We can identify the outliers using histograms 
+
+ggplot(df) + geom_histogram(aes()

@@ -1,5 +1,7 @@
 ###-----Helping Functions ---------####
 
+# FUNC: Custom function to calculate mode ---------------------------------
+
 get_mode <- function(v) { 
   
   uniq <- unique(v) # get the unique values of the vector 
@@ -10,6 +12,9 @@ get_mode <- function(v) {
   )
   ] # we assign indecies in match, then show their # of occurances, take max, use it as index in unique values 
 }
+
+
+# FUNC: dotplot with Mean,Median,Mode -------------------------------------
 
 get_dotplot <- function(v,ant_nudge = .15) {
   require('ggplot2') 
@@ -36,6 +41,7 @@ get_dotplot <- function(v,ant_nudge = .15) {
 }
 
 
+# FUNC: Comparing two histograms ------------------------------------------
 compare_hist <- function(x1,x2) {
   require("tidyverse")
   require("ggplot2")
@@ -51,6 +57,8 @@ ggplot(df_tidy) + geom_histogram(mapping = aes(x = value, fill = set), show.lege
 }
 
 
+# FUNC: Creating one Histogram with Mean Median and Mode ------------------
+
 get_hist <- function(v,ant_nudge = .15) {
   require('ggplot2') 
   
@@ -58,8 +66,8 @@ get_hist <- function(v,ant_nudge = .15) {
   df_1 <- data.frame(v) 
   ## Creating the annotations 
   annot <- data.frame(statistic = c('mean', 'median', 'mode'), 
-                      value = c( round(mean(v),4), 
-                                 round(median(v),4), 
+                      value = c( round(mean(v,na.rm = TRUE),4), 
+                                 round(median(v,na.rm = TRUE),4), 
                                  round(get_mode(v),4)
                       )
   )
@@ -72,4 +80,17 @@ get_hist <- function(v,ant_nudge = .15) {
     ylab("") +
     geom_vline(annot,mapping = aes(xintercept = value, color = statistic), alpha = 0.5, size = 2)
   return (g)
+}
+
+
+# FUNC : Adding missing values  -------------------------------------------
+
+add_missing <- function(df, columns,p) {
+  
+  df_curpt <- apply(df[,columns,drop = F], c(1,2), function(x) {
+    a <- rbinom(1,c(1,0), prob = c(p,1-p))
+    ifelse(a==1,"",x)})
+  df_curpt <- data.frame(df_curpt)
+  df[,colnames(df_curpt)] <- df_curpt[,colnames(df_curpt)]
+  return(df)
 }
