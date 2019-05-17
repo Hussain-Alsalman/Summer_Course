@@ -1,0 +1,27 @@
+---
+title: "Week 2 Session 2"
+author: "Hussain Alsalman"
+date: "May 16, 2019"
+output:
+  ioslides_presentation: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Recap from Last session  {.build}
+
+
+- We learn a lot about the 
+
+
+## Data Pre-Processing Continuation
+
+ - Graphical Methods to identify outliers
+ - Normalizing data
+ - Min–max normalization
+ - Transformation to achive normality
+
+

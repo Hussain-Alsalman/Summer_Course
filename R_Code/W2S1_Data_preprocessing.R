@@ -172,16 +172,3 @@ table(mc_df$brand)
 
 
 
-# Graphical Methods to identify outliers ----------------------------------
-
-# Reading Data 
-
-library("here")
-
-file_path <- here("datasets", "outlier_cars.txt")
-
-df <- read.table(file = file_path, sep = ',', stringsAsFactors = FALSE,header = TRUE)
-
-# We can identify the outliers using histograms 
-
-ggplot(df) + geom_histogram(aes()
