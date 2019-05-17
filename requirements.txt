@@ -18,4 +18,7 @@ req_packages <- c("devtools",
 
 install.packages(req_packages)
 
+# PCA visualization package
+library("devtools")
+install_github("vqv/ggbiplot")
 

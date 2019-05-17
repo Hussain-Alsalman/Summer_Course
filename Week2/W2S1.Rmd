@@ -88,7 +88,7 @@ We can describe quantative data by
     
 - Outliers
 
-# Demo
+# Let's Practice
 
 ## Data Preprocessing {.build}
 
@@ -100,12 +100,15 @@ Why do we preprocess data?
 - Data in a form not suitable for the machine learning models;
 - Values not consistent with policy or common sense.
 
-## Common Tasks in Data preprocessing 
+## Common Tasks in Data preprocessing {.build}
 
 - Data cleaning
 - Handling missing data 
 - Identify misclassificaitons 
-- Graphically identify outliers 
-- Transformation data _to work better with ML models_
-- Normalize the data
+- Graphically identify * 
+- Transformation data _to work better with ML models_ *
+- Normalize the data * 
 
+/* _if time permits or next session_
+
+# Let's Practice 

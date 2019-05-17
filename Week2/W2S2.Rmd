@@ -17,11 +17,86 @@ knitr::opts_chunk$set(echo = TRUE)
 - We learn a lot about the 
 
 
-## Data Pre-Processing Continuation
+## Data Pre-Processing Continuation {.build}
 
  - Graphical Methods to identify outliers
  - Normalizing data
  - Min–max normalization
  - Transformation to achive normality
+
+# Let's practice 
+
+## Other considerations - Data Preprocessing {.build}
+
+Categorical variables : we create **dummy variables** for catagorical variables that are **Nominal**
+
+Example: How to encode `Maritul Status`? given that we have 4 categoris {Married, Single, Divorced, Seperated} 
+
+| CustomerID   | Income   | Maritul Status   |
+|:------------:|:--------:|:----------------:|
+| 10001        | 40000    | Married          |
+| 10002        | 63000    | Single           |
+
+---- 
+
+We simply create **dummy variables** for `n-1` of all the classes for the categorical variable. 
+
+| CustomerID | Income | Single | Married | Divorced |
+|:----------:|:------:|:------:|:-------:|:--------:|
+|    10001   |  40000 |    0   |    1    |     0    |
+|    10002   |  63000 |    1   |    0    |     0    |
+
+## Other considerations  - Data Preprocessing {.build}
+
+Categorical variables : we can subtitute classes with  numericals for variables that are **Ordinal** 
+
+Example 
+
+| Class             | value |
+|-------------------|:-----:|
+| strongly disagree |   1   |
+| disagree          |   2   |
+| netural           |   3   |
+| agree             |   4   |
+| strongly agree    |   5   |
+
+## Other considerations  - Data Preprocessing {.build}
+
+Binning Numerical Variables : Some algorithms perfer categorical variables therefore, we need to perform binning
+
+ 1. Equal width binning
+ 2. Equal frequency binning
+ 3. Binning by clustering
+ 4. Binning based on predictive value
+
+note: 
+
+- 1 & 3, does not consider the target variable. 
+- 1 can be easily influenced by outliers 
+- 2 has an assumption that every class is equaly likely ( _most of the time unrealistic_ )
+- 3 & 4 are usually preferred.
+
+
+## Other considerations  - Data Preprocessing {.build}
+
+Removing Variables That Are Not Useful
+
+- unary or almost unary 
+
+Reasoning : 
+
+having fixed or almost fixed variable does not help explain the variability in the target variable. 
+
+## Other considerations  - Data Preprocessing {.build}
+
+Variables That Should Probably Not Be Removed
+
+- Variables with 90% or more missing data 
+- Variables that are strongly correlated 
+
+Reasoning : 
+
+- Before deleting the whole variable with a lot of missing data, we need to investigate if there is a pattern in the missingness of those variables. We might create a flag variable that is useful.
+- if two variables are correlcted some analyst just remove one of the variables, however, this might lead to lost of important information. It is best to use principle component analysis instead. 
 
 
