@@ -14,10 +14,10 @@
 # H : households
 # LAT : latitude
 # LON : longitude
-
 # Spliting the Data  ---------------------------------------------------------------
-
-houses20640 <- read.csv("houses20640.csv" , header = T)
+library("here")
+file_path <- here("datasets", "houses20640.csv")
+houses20640 <- read.csv(file_path , header = T)
 
 # Check the dimansion 
 dim(houses20640)
@@ -51,10 +51,18 @@ predictor_tr[1,]
 PCA <- prcomp(scale(predictor_tr))
 
 # Extracting Eigenvectors
-PCA$
+eigen_vectors <- PCA$rotation
+
+# Extracting Eigenvalues 
+eigen_values <- PCA$sdev^2
+
+# Extracting unstanderdized EigenVecotrs (Loadings)
+loadings_vectors <- sweep(eigen_vectors,2,PCA$sdev,`*`)
 
 
 
 library("ggbiplot")
 
 ggscreeplot(PCA)
+
+ggbiplot(PCA, alpha = 0.1)

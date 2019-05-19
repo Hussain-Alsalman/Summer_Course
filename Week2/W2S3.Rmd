@@ -1,0 +1,91 @@
+---
+title: "Week 2 Session 3"
+author: "Hussain Alsalman"
+output:
+  ioslides_presentation: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("here")
+library("ggplot2")
+library("tidyverse")
+```
+
+
+## Recap from Last session  {.build}
+
+
+- We learn a lot about the 
+
+## Dimension-Reduction - Why?
+
+Databases in real-world applications typically have million of rows and thousands of columns. Most of the time those columns (_variables_) are not truly independant. Some predictors might be related to each other or **correlated**. 
+
+Problems arise from correlated variables 
+
+- Instable model
+- model might be misleading
+- complicated model.
+- too many _predictors_ might cause **overfitting**
+
+
+## Dimension-Reduction techniques 
+
+There are many optoins and techniques to resolve this issue two famous options 
+- Remove the least useful predictors (_require domain expert_)
+_ **Principle Component Analysis** or **PCA**
+
+## Some Statistical Concepts first
+
+How do we measure the relationship between variables?
+
+We use **covariance** (_not common_) or **correlation** (_most common_)
+
+
+## Correlation vs Covariance
+
+Covariance : $Cov(x,y) = \frac{\sum (X-\bar{X})(Y-\bar{Y})}{N}$
+
+Correlation : $r = \frac{1}{n-1} \sum (\frac{X-\bar{X}}{s_{x}}){(\frac{Y-\bar{Y}}{s_{y}})}$
+
+
+**Correlation Types**
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","correlation_examples.png"))
+```
+
+## Back to Dimentionality reduction
+
+first option is to just remove variables. **not recommended**
+
+**Example**
+US Householdes data. 
+
+        - MHV : median house value
+        - MI : median income
+        - HMA : housing median age
+        - TR : total rooms
+        - TB : total bedrooms
+        - P : populatio
+        - H : households
+        - LAT : latitude
+        - LON : longitude
+
+
+---
+
+Let's discuss
+
+```{r,echo=FALSE}
+
+file_path <- here("datasets", "houses20640.csv")
+df <- read.csv(file = file_path, header = T)
+sample_df<- df[sample(x = nrow(df), size = 1000),]
+pairs(sample_df)
+```
+
+
+#Lets go to the PCA discussion file discussion 

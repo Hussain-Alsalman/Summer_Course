@@ -125,7 +125,7 @@ knitr::include_graphics(path = here("Images","Pivot-Table-Data-Source-Structure.
    - Those include everything else, from texts on websites and social media to uploaded videos and music. 
   
 ```{r, out.width='80%', fig.align='center'}
-knitr::include_graphics(path = here("Images","Screen-Shot-2016-08-24-at-1.22.53-PM.png"))
+knitr::include_graphics(path = here("Images","unstructured_data_examples.png"))
 ```
   
 ## Structured VS Unstructured 

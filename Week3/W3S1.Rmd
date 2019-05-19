@@ -1,0 +1,288 @@
+---
+title: "Week 3 Session 1"
+author: "Hussain Alsalman"
+date: "5/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo= FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("here")
+library("ggplot2")
+library("gganimate")
+```
+
+## What We learned so far?
+
+ - 
+ - 
+ - 
+ - 
+ 
+ 
+## What we will learn today 
+
+ - The difference between supervised learning vs unsupervised learning
+ - The concept of linear regression model ?
+ - Constructing Regression models with R.
+ - Interperting your model 
+
+## Branches of Machine Learning
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","Supervised_vs_unsupervised.jpg"))
+```
+
+
+## What is the difference between supervised & unsupervised learning 
+
+**Supervised learning** is a modeling technique that you use when you have labeled data. This enables you to check if your model is getting the right answer or not. It also enables you to assess the quality of your model. 
+
+```{r, out.width= '100%' ,fig.align='center'}
+knitr::include_graphics(path = here("Images","Supervised_machine_learning_in_a_nutshell.png"))
+```
+
+**Unsupervised learning** is a modeling technique that you use when you dont have labeled. perfectly labeled datasets aren’t easy to come by. And sometimes, researchers are asking the algorithm questions they don’t know the answer to
+
+# Linear Regression 
+
+## So what is Linear Regression model?
+
+Let's walk through an example to see the motivation and the idea behind linear regression.
+
+We can estimate the expected value of `income` by simply calculating the the mean. In this case we did not really bother to utalize what we know about the `age` of the individuals. 
+
+
+```{r}
+reg_df <- data.frame(age = c(2,2,3,4,4,5,6,7,8,9), income = c(10:15,20,18,22,25))
+
+# We wants to predict Y 
+g1 <- ggplot(reg_df, mapping = aes(x = age, y = income)) + 
+  geom_point() 
+
+g2<- g1+
+  
+  # We can estimate the line by only the mean .. and we did not really bother to use the information in the Age. 
+  geom_hline(aes(yintercept = mean(income)), linetype = "solid", color = "red") + 
+  geom_text(aes(y = mean(income), x=0, label = paste("Mean ", mean(income)) ),color = "red", nudge_x = 2, nudge_y = 0.4) + 
+  
+  geom_segment(mapping= aes(y = mean(income), yend = income, x = age, xend = age ), linetype = "dashed", color = "navy")
+
+  #geom_smooth(method = 'lm', se = FALSE)
+g2
+```
+
+We can write the formula as such 
+
+$$\hat{y} = \frac{1}{n}\sum_{i = 1}^{n}{y_{i}} = E[Y] = `r  mean(reg_df$income)` $$
+
+As shown in the graph our estimation is not accurate. This inaccuracy can be measured by the sum of the squared error. The difference between the mean of the dependant variable and the mean is called **Sum of Squares Total Errors (SST)**. We calculate it using this fomula 
+
+$$
+SST = \sum_{i=1}^{n}(y_{i} - \bar{y})^2
+$$
+
+
+In this case our $SST$ is `r sum((reg_df$income - mean(reg_df$income))^2) #228`
+
+## Can we do better? 
+
+Of course!! this is where **Linear Regression** come to rescue. Linear Regression is all about fitting the best line that minimize the error. 
+
+Since we are dealing with only one variable, we can achieve that by changing the only slope and the intercept of this line. 
+
+If you remember from high school this is the equation of the line. 
+
+$$ 
+y = a + bx + \epsilon
+$$ 
+
+let's try to find better line
+
+
+```{r, eval= FALSE}
+line_df <- data.frame(
+  a = round(seq(0,2,length.out = 50),2),
+  b = round(seq(16,6, length.out = 50),2),
+  time = 1:50
+
+)
+
+ g1 + geom_abline(data = line_df, aes(slope= a, intercept=b )) +  
+  transition_components(time=time) + 
+  scale_y_continuous(limits = range(0,25)) 
+  
+
+```
+
+We came up with this line. It looks good, don't you think?
+
+notice that we were lucky that some points were exactly on the line. This is not always good though, we might be **overfitting** the model. 
+
+```{r}
+ g1 + geom_abline(slope = 2,intercept = 6) + 
+  geom_segment(mapping = aes(x=age , xend = age , y =income , yend = 2*age+6 ), color = "orangered2")
+ 
+```
+
+
+
+When we calculat the error for this line we get **Sum of Squares Errors (SSE)**  of `r sum(round(lm(income~age, data = reg_df)$residuals)^2) `
+
+# let's compare both lines and see how different they are 
+
+```{r}
+ g2 + geom_abline(slope = 2,intercept = 6) + 
+  geom_segment(mapping = aes(x=age , xend = age , y =income , yend = 2*age+6 ), color = "orangered2")
+ 
+```
+
+
+Notice at point `age = 6` and `income = 20`. The distance between our line and the **mean** is called the **Regression Error** or **Model Error** or **SSR**. 
+
+When we calculate this error we get 
+```{r}
+round(anova(lm(income~age, data = reg_df))$`Sum Sq`[1]) 
+```
+
+And the relationship between the three Errors are as such 
+
+$$SST = SSE + SSR $$
+
+
+## Important concepts 
+
+It is all good and awesome to know the sum of squared error. But this is not very useful because it seems that there is a relationship between the sample size and the errors. We would like to see a measure of error without sample size effect.  Your next friend is **MSE** or **Mean of Squared Error**.  And here is the formula 
+
+$$
+MSE = \frac{SSE}{n-2} 
+$$
+
+We can derive **RMSE** by simply taking the square root from **MSE**
+
+$$
+RMSE = \sqrt{MSE} 
+$$
+ 
+## So how do we know if our model is good? 
+One way to measure is to see how much variance our model has explained in comparison with the **mean** model. 
+
+For the purposes of this course all you need to know that also 
+
+$$ R^2 = \frac{SSR}{SST} $$ 
+
+
+## R can magically do all this calculation in really simple code. 
+
+```{r, echo = TRUE}
+# This is our data
+reg_df <- data.frame( age = c(2,2,3,4,4,5,6,7,8,9), income = c(10:15,20,18,22,25) )
+
+m_1 <- lm( income ~ age , data = reg_df)
+
+summary(m_1)
+
+```
+
+
+### Let's assume now that we have new preson and we know his/her age information and we want to estimate the his/her income 
+
+```{r}
+
+new_df <- data.frame(age=c(5,2,6,9,1,4,4,2), income = c(16,20,14,13,25,18,9,23))
+
+#our estimation by using the predict function 
+a <-predict(m_1,newdata = new_df, se.fit = TRUE)
+
+# or we can simply subtitute in the function  y = 2 *(5) + 6 
+```
+
+
+# Hands on : Exercise 
+
+```{r}
+file_path <- here("datasets", "sat_and_college_gpa.txt")
+df_1<- read.table(file = file_path, head= TRUE, stringsAsFactors = FALSE, sep = " ", comment.char ="#" )
+dim(df)
+ggplot(df, mapping= aes(y = univ_GPA, x = high_GPA)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
+
+#Can you predict University GPA from High school GPA ?  
+
+
+```
+
+## Multivariate Regression model 
+
+let's look back again at the line equation 
+
+$$ 
+y = a + bx + \epsilon
+$$ 
+
+
+In Multivariate Linear Regression , we can simply extend this idea and and more variables .. 
+
+$$ 
+y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n}  \epsilon
+$$ 
+
+Now we have more challenging job. Our chellange is to estimate all those Betas. Luckily R can do this pretty fast. 
+
+```{r,echo = TRUE}
+
+mult_m <-lm(univ_GPA ~ high_GPA + math_SAT + comp_GPA, data = df)
+
+```
+
+
+
+## Important Assumptions about Linear Regression 
+
+1. Linearity: The relationship between the two variables is linear
+
+2. Homoscedasticity: The variance around the regression line is the same for all values of X
+
+3. The errors of prediction are distributed normally. This means that the deviations from the regression line are normally distributed.
+
+
+
+#How to evaluate our Regresssion 
+
+unlike most supervised models, we assess regression models with statistical measures.  
+
+First we look at how good the model over all  
+
+## F-Distribution 
+
+remember the F that we say at the summary print out. This tells us how good the model over all. meaning 
+
+Is there statistical significance that at least one of the Betas is not zero.  if P is below 0.05 we generally say the model is significant. 
+
+```{r, echo = TRUE}
+summary (mult_m)
+
+```
+
+
+
+## Are our betas significant
+
+Rembmer the betas we estimated, our estimate is not exactly perfect. Therefore, in statistics, there is something called confidance intervals _we don't have to worry about it_ but it's basically gives us range of numbers with confidance. 
+
+There fore it's important to see how confidant we are about our betas. 
+
+```{r}
+library("coefplot")
+coefplot(mult_m)
+```
+
+## We can use cross validation and measure RSME
+
+We will talk about cross validation later but it's good to know that we have another way to assess our model.
+
+```{r}
+cv.lm(data = df_1, mult_m, m=10, dots = FALSE, seed=29, plotit=TRUE, printit=TRUE)
+```
+
+
+

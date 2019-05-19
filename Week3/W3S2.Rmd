@@ -1,0 +1,95 @@
+---
+title: "W3S2"
+author: "Hussain Alsalman"
+date: "5/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What We learned so far?
+
+ - 
+ - 
+ - 
+ - 
+ 
+## What you will learn tonight 
+
+ - 
+ - 
+ - 
+ 
+## Introduction to Logistic Regression 
+
+Not all data can be appropriately modeled with linear regression, because they are **binomial** (TRUE/FALSE), count data or some other form. To model these types of data, we use different type linear models. Logestic Regression is one of them. 
+
+
+## Logestic Regression Models 
+
+One of the most powerfull tools to answer yes/no questions (_binary classificaiton_) is logestic regression.
+
+remember this equaiton ? 
+
+$$ 
+y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n}  \epsilon
+$$ 
+
+we will make few modifications to make the output from 0 to 1. This modification is called **logit transofrmation**.
+
+The final function will look something like this 
+
+$$
+\pi(x) = \frac{e^{\beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n}}}{1 + e^{\beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n}}}
+$$
+
+
+## Let's work by Example 
+
+Here we have data for the households in New York State. 
+
+### Can we Answer this question  : 
+Can we classify whether a household has an income greater than $150,000 or not? 
+
+```{r}
+acs <- read.table("http://jaredlander.com/data/acs_ny.csv", sep=",", header=TRUE, stringsAsFactors=FALSE)
+
+```
+
+
+```{r}
+# first thing we do is engineer a categorical variable for income 
+library("dplyr")
+library("tidyverse")
+
+acs <- acs %>% mutate( Income = FamilyIncome >= 150000)
+
+## Let's see visualize the income to get and idea about the distribution 
+
+## to visualize how thie distribution income in the data 
+library("ggplot2") 
+ggplot(acs, mapping = aes(x = FamilyIncome)) + 
+  geom_density(fill = "gray")   + 
+  geom_vline(xintercept = 150000)
+  
+
+## We can now create our model simply but calling the glm function. `glm` stands for gereralized linear models. 
+
+incom1 <- glm( Income ~ HouseCosts + NumWorkers + OwnRent + NumBedrooms + FamilyType, data = acs, family = "binomial")
+
+summary(incom1)
+
+
+## We can examine our betas if they are significant 
+
+library("coefplot")
+
+coefplot(incom1)
+
+
+
+```
+
+

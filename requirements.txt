@@ -12,9 +12,15 @@ req_packages <- c("devtools",
 		"here",
 		"RSQLite",
 		"ggplot2",
+		"gganimate",
+		"gifski",
+		"png",
  		"caret", 
  		"e1071", 
- 		"ODB")
+ 		"ODB",
+ 		"UsingR",
+ 		"coefplot", 
+ 		"DAAG")
 
 install.packages(req_packages)
 
