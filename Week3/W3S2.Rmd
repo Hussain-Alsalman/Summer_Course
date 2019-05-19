@@ -7,6 +7,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("here")
+library("broom")
+library("useful")
 ```
 
 ## What We learned so far?
@@ -26,6 +30,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Not all data can be appropriately modeled with linear regression, because they are **binomial** (TRUE/FALSE), count data or some other form. To model these types of data, we use different type linear models. Logestic Regression is one of them. 
 
+## We can't we just use the simple regression line. 
+
+
+Consider this example 
+
+```{r}
+#Why can't we just do regression model .. what can go wrong? 
+iris[1:100,] %>%  mutate( class = ifelse(Species == "setosa",1,0)) %>% 
+ggplot(mapping = aes(x = Sepal.Length, y = class, group  =1)) + geom_point()   + 
+  stat_smooth(geom = "line",method= "lm", se = FALSE,alpha = 0.7, color = "navy",linetype = "dashed") + 
+  
+  #or we can alternatively use more flexible line   
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE, color="orangered2")
+
+
+```
+
 
 ## Logestic Regression Models 
 
@@ -34,7 +55,7 @@ One of the most powerfull tools to answer yes/no questions (_binary classificait
 remember this equaiton ? 
 
 $$ 
-y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n}  \epsilon
+y = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \dots +  \beta_{n}x_{n} + \epsilon
 $$ 
 
 we will make few modifications to make the output from 0 to 1. This modification is called **logit transofrmation**.
@@ -75,21 +96,106 @@ ggplot(acs, mapping = aes(x = FamilyIncome)) +
   geom_vline(xintercept = 150000)
   
 
+
 ## We can now create our model simply but calling the glm function. `glm` stands for gereralized linear models. 
 
-incom1 <- glm( Income ~ HouseCosts + NumWorkers + OwnRent + NumBedrooms + FamilyType, data = acs, family = "binomial")
+incom1 <- glm( Income ~ HouseCosts + NumWorkers + OwnRent + NumBedrooms + FamilyType, data = acs, family = "binomial") 
 
 summary(incom1)
 
-
+# we read the coefficients as weights and gain insight on about the relationship between independant variables and the depandent variable. 
 ## We can examine our betas if they are significant 
 
 library("coefplot")
 
 coefplot(incom1)
 
+```
 
+
+## How to select the variables for our regression model 
+
+Our objective is to come up with a simple and powerful regression model. This model should have these two characteristics 
+
+- Select only the important variables 
+- Have stable weights _ coefficients_ 
+
+$$
+\hat{y} = \hat\beta_{0} + \hat\beta_{1}x_{1} + \hat\beta_{2}x_{2} + \dots +  \hat\beta_{n}x_{n}
+$$
+
+Remember that our objective is to minimize the sum of squared error **SSE**. 
+
+$$
+ \sum_{i=1}^{n}(y_{i} - \hat{y}_i)^2
+$$
+
+
+We can add a penelty in the formula above for using too many variables. This is called **lasso regression**.  This penelty is also called **regularization**. 
+
+We can also add another panelty for using big Betas.  This is called **ridge regression**. It is also called **shrinkage**. 
+
+combining them together is called **Elastic Net**. 
+
+The equation in the most simple and silly way would look like this 
+
+$$
+min(error) = SSE + panelty
+
+$$
+
+Real equatoin looks like this 
+
+```{r}
+knitr::include_graphics(path = "https://www.analyticsvidhya.com/wp-content/uploads/2015/08/Elastic_Net.png")
+```
+
+
+
+
+## Math check !! 
+
+remember this equation.
+
+$$
+
+\begin{bmatrix}
+y_{1} \\ y_{2} \\ \dots \\ y_{n}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & x_{12} & x_{13} & \dots & x_{1n} \\
+1 & x_{22} & x_{23} & \dots & x_{2n} \\
+\dots  & \dots  & \dots  & \dots & \dots  \\
+1 & x_{n2} & x_{n3} & \dots & x_{nn} 
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\ \beta_1 \\ \dots \\ \beta_{n}
+\end{bmatrix}
+
+\
+$$
+
+
+The short form of this formula is 
+
+$$
+ Y = X\beta
+$$
+
+
+## Let's go back to our house example.  
+
+we will use `glment` package which implement this nice idea of panalizing the regression model. 
+
+```{r}
+
+#first we design the 
 
 ```
+
+
+
+
 
 

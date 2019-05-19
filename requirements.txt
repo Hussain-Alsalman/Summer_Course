@@ -20,7 +20,8 @@ req_packages <- c("devtools",
  		"ODB",
  		"UsingR",
  		"coefplot", 
- 		"DAAG")
+ 		"DAAG",
+ 		"glmnet")
 
 install.packages(req_packages)
 

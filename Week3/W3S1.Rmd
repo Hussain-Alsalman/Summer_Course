@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library("here")
 library("ggplot2")
 library("gganimate")
+library("broom")
 ```
 
 ## What We learned so far?
@@ -128,6 +129,10 @@ notice that we were lucky that some points were exactly on the line. This is not
 
 
 When we calculat the error for this line we get **Sum of Squares Errors (SSE)**  of `r sum(round(lm(income~age, data = reg_df)$residuals)^2) `
+
+$$
+SSE = \sum_{i=1}^{n}(y_{i} - \hat{y}_i)^2
+$$
 
 # let's compare both lines and see how different they are 
 
@@ -285,4 +290,13 @@ cv.lm(data = df_1, mult_m, m=10, dots = FALSE, seed=29, plotit=TRUE, printit=TRU
 ```
 
 
+## We should plot the residuals to check for weird patterns 
+
+```{r}
+ggplot(data=augment(mult_m), mapping = aes(y = .resid, x=.fitted)) +  
+  #we could investigate further and see if we have systemic problem with our prediction/estimations. 
+  geom_point( aes(color = math_SAT > 600)) + 
+  geom_hline(mapping = aes(yintercept = 0))
+             
+```
 
