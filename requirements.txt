@@ -21,7 +21,11 @@ req_packages <- c("devtools",
  		"UsingR",
  		"coefplot", 
  		"DAAG",
- 		"glmnet")
+ 		"glmnet",
+ 		"ggforce",
+ 		"C50",
+ 		"rpart",
+ 		"rpart.plot")
 
 install.packages(req_packages)
 

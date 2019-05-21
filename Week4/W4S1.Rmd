@@ -1,0 +1,69 @@
+---
+title: "Week 4 Session 1"
+author: "Hussain Alsalman"
+date: "5/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("here")
+library("ggplot2")
+library("caret")
+library("C50")
+library("rpart")
+library("rpart.plot")
+```
+
+## What you will learn tonight 
+
+ - What is the Decision Tree Model
+ - Type of Decision Tree 
+ - What is happening under the hood for Decision Tree Cart 
+ - How to create Decision Tree Models.
+ - Visualize Decision Trees
+ 
+## Decision Trees
+
+- Popular classification method in data mining
+- Decision Tree is collection of decision nodes, connected by branches, extending downward from root node to terminating leaf nodes
+ - Beginning with root node, attributes tested at decision nodes, and each possible outcome results in branch
+ - Each branch leads to decision node or leaf node 
+
+## Example
+
+ - Credit Risk is the target variable
+ - Customers are classified as either “Good Risk” or “Bad Risk”
+ - Predictor variables are Savings (Low, Med, High), Assets (Low, High) and Income
+
+
+```{r, echo = FALSE}
+file_path <- here("datasets", "Table11.2.csv")
+credit_risk <- read.csv(file = file_path)
+
+crt_tree <- rpart(data = credit_risk, CreditRisk~ Savings+ Assets + Income, control = rpart.control(minsplit=1, cp=0.000001) )
+# predictors <- credit_risk[,c("Savings","Assets","Income")]
+# d_tree <-C5.0(x =predictors, y = credit_risk[,"CreditRisk"] ,control = C5.0Control(subset = TRUE),)
+# plot(d_tree)
+rpart.plot(crt_tree,fallen.leaves = FALSE, type  = 5, extra = 8)
+```
+
+## Decision Trees Algorithms 
+
+There are many decision trees algorithm but 
+
+## Controling the behavior of Decision Tree
+
+
+
+## REQUIREMENTS FOR USING DECISION TREES
+
+- Decision tree algorithms represent supervised learning, and as such require preclassified target variables. A training data set must be supplied which provides the algorithm with the values of the target variable
+- This training data set should be rich and varied, providing the algorithm with a healthy cross section of the types of records for which classification may be needed in the future. Decision trees learn by example, and if examples are systematically lacking for a definable subset of records, classification and prediction for this subset will be problematic or impossible
+- The target attribute classes must be discrete. That is, one cannot apply decision tree analysis to a continuous target variable. Rather, the target variable must take on values that are clearly demarcated as either belonging to a particular class or not belonging
+
+
+
+
+ 

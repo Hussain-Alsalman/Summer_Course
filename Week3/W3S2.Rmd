@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library("tidyverse")
 library("here")
 library("broom")
+library("coefplot")
 library("useful")
 ```
 
@@ -127,8 +128,9 @@ $$
 Remember that our objective is to minimize the sum of squared error **SSE**. 
 
 $$
- \sum_{i=1}^{n}(y_{i} - \hat{y}_i)^2
+\sum_{i=1}^{n}(y_{i} - \hat{y}_i)^2
 $$
+
 
 
 We can add a penelty in the formula above for using too many variables. This is called **lasso regression**.  This penelty is also called **regularization**. 
@@ -141,28 +143,24 @@ The equation in the most simple and silly way would look like this
 
 $$
 min(error) = SSE + panelty
-
 $$
 
 Real equatoin looks like this 
 
-```{r}
+```{r, fig.align='center', echo = FALSE}
 knitr::include_graphics(path = "https://www.analyticsvidhya.com/wp-content/uploads/2015/08/Elastic_Net.png")
 ```
 
 
 
-
 ## Math check !! 
 
-remember this equation.
+Remember this equation. This is the same equation we have been seening all the time tonight but in different form. 
 
 $$
-
 \begin{bmatrix}
 y_{1} \\ y_{2} \\ \dots \\ y_{n}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & x_{12} & x_{13} & \dots & x_{1n} \\
 1 & x_{22} & x_{23} & \dots & x_{2n} \\
@@ -172,30 +170,104 @@ y_{1} \\ y_{2} \\ \dots \\ y_{n}
 \begin{bmatrix}
 \beta_0 \\ \beta_1 \\ \dots \\ \beta_{n}
 \end{bmatrix}
-
-\
 $$
 
 
 The short form of this formula is 
 
 $$
- Y = X\beta
+Y = X\beta
 $$
+
+Understanding this is important to go to the next step 
+
+
+```{r}
+testFrame <-
+ data.frame(First=sample(1:10, 20, replace=TRUE),
+ Second=sample(1:20, 20, replace=TRUE),
+ Third=sample(1:10, 20, replace=TRUE),
+ Fourth=factor(rep(c("Alice", "Bob", "Charlie", "David"), 5)),
+ Fifth=ordered(rep(c("Edward", "Frank", "Georgia",
+ "Hank", "Isaac"), 4)),
+ Sixth=rep(c("a", "b"), 10), stringsAsFactors=F)
+
+str(testFrame)
+head(testFrame)
+
+```
+
+Let's design the X matrix. I hope you still remember how we encode the _categorical variables_ :) 
+
+```{r}
+
+head(model.matrix(First ~ Second + Fourth + Fifth, testFrame))
+
+
+```
+
+Notice that the `model.matrix` has converted the categorical variables to dummy variables. This is different with the `Fifth` column as this is an ordinal variable. 
+
+for our purposes we need all variables as flags either _On_ or _Off_ . so we design it with modificaiton as the following 
+
+```{r}
+#we will use the build.x form 'useful' package 
+
+head(build.x(First ~ Second + Fourth + Fifth, testFrame, contrasts = FALSE))
+
+# we can remove the intercept by adding -1 
+
+head(build.x(First ~ Second + Fourth + Fifth -1, testFrame, contrasts = FALSE))
+```
 
 
 ## Let's go back to our house example.  
 
-we will use `glment` package which implement this nice idea of panalizing the regression model. 
+We will use `glment` package which implement this nice idea of panalizing the regression model. 
+
+
 
 ```{r}
 
-#first we design the 
+#first we create the Design matrix X 
+# do not include the intercept as glmnet will add that automatically
+formula_m <- Income ~ NumBedrooms + NumChildren + NumPeople + NumRooms + NumUnits + NumVehicles + NumWorkers + OwnRent + YearBuilt + ElectricBill + FoodStamp + HeatingFuel + Insurance + Language - 1
 
+acx_X <- build.x(formula_m, data = acs, contrasts = FALSE, sparse = TRUE)
+
+#first we create the response matrix Y 
+# do not include the intercept as glmnet will add that automatically
+acy_Y <- build.y(formula_m,data = acs)
+
+
+library("glmnet")
+set.seed(1863561)
+
+m1  <- glmnet(x = acx_X, y = acy_Y, family = "binomial")
+
+##viewing the weights using different lambdas 
+
+View(as.matrix(m1$beta))
+
+
+#
 ```
 
 
+Remember lambda? it is our penelty factor .. We decide the mix between lasso & rigid panelties by specifying `alpha`. the default value is 1 which is Lasso panelty. We can change it to .4 for example. This will mean that 40% lasso and 60% rigid.  
+
+Since we have not specified lambda, the function makes 100 iterations with different lamdba as seen with `View(as.matrix(m1$beta))`
+
+We can visualize the effect of choosing different lambda
+
+```{r}
+plot(m1, xvar = "lambda")
+
+#We can see the effect of lambda interactively 
+coefpath(m1)
+```
 
 
+#
 
 

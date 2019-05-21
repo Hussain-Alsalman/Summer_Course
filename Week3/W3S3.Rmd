@@ -1,0 +1,255 @@
+---
+title: "Week3 Session 3"
+author: "Hussain Alsalman"
+date: "5/20/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("here")
+library("readxl")
+library("ggplot2")
+library("ggforce")
+library("caret")
+```
+
+## What you will learn tonight 
+
+ - What is the K Nearest Neighbor Model
+ - Training/Testing split of the data. 
+ - What is happening under the hood for KNN
+ - How to create K Nearest Neighbor Model. 
+
+## Some concepts first 
+
+ - **Classification** is a supervised method and includes two or more classes for the categorical target variable
+ - For example, the target variable income_bracket may include the categories “Low”, “Middle”, and “High”
+ - The algorithm examines relationships between the values of the predictor (input) fields and target values
+
+Suppose, we want to classify a person’s income bracket based on the age, gender, and occupation values of others contained in a database
+
+| Subject | Age | Gender |      Occupation      | Income Bracket |
+|:-------:|:---:|:------:|:--------------------:|:--------------:|
+|   001   |  47 |    F   |   Software Engineer  |      High      |
+|   002   |  28 |    M   | Marketing Consultant |     Middle     |
+|   003   |  35 |    M   |      Unemployed      |       Low      |
+|   ...   | ... |   ...  |          ...         |       ...      |
+
+ - First, the classification algorithm examines the data set values for the predictor and target variables in the training set
+ - This way, the algorithm “learns” which values of the predictor variables are associated with values of the target variable
+ - For example, older females may be associated with income_bracket values of “High”
+ - Now that the data model is built, the algorithm examines new records for which income_bracket is unknown
+ - According to classifications in the training set, the algorithm classifies the new records
+ - For example, a 63 year-old female might be classified in the “High” income bracket 
+
+##k-Nearest Neighbor Algorithm
+
+- The k-Nearest Neighbor algorithm is an example of instance-based learning where training set records are first stored
+
+- Next, the classification of a new unclassified record is performed by comparing it to records in the training set it is most similar to
+
+- k-Nearest Neighbor is used most often for classification, although it is also applicable to estimation and prediction tasks
+
+
+## Patient example 
+
+In the medical field, suppose we are interested in classifying the type of drug a patient should be prescribed, based on certain patient characteristics, such as the age of the patient, and the patient’s sodium/potassium ratio. 
+### Dataset 
+For a sample of 200 patients, the graph below presents a scatter plot of the patients’ sodium/potassium ratio against the patients’ age. The particular drug prescribed is symbolized by the shade of the points. Light gray points indicate drug Y; medium gray points indicate drugs A or X; dark gray points indicate drugs B or C. In this scatter plot, Na/K
+
+```{r}
+file_path <- here("datasets", "DRUG1n.xlsx")
+drug_df <- read_xlsx(path = file_path)
+
+
+g1 <- ggplot(drug_df, aes(x = Age, y = Na_Kratio)) + geom_point(mapping = aes(color = Drug))
+g1
+```
+
+## Now We have 3 patients  
+
+  - Patient 1 : age = 40 and Na/K ratio 29
+  - Patient 2 : age = 17 and Na/K ratio 12.5
+  - Patient 3 : age = 47 and Na/K ratio 13.5
+
+let's plot them 
+
+```{r}
+patients <- data.frame(Age = c(40,17,47), Na_Kratio= c(29,12.5,13.5), name = c("Patient 1","Patient 2","Patient 3") )
+
+g1 + geom_point(data = patients, mapping = aes(x = Age, y = Na_Kratio, shape = name ) )  + 
+  geom_circle(data = patients, mapping= aes(x0 = Age, y0 = Na_Kratio, r=3), inherit.aes = FALSE)
+
+
+```
+
+
+ 
+Which drug should Patient 1,2 and 3 be prescribed?
+
+#- open Discussion 
+
+
+
+
+###Considerations when using k-Nearest Neighbor
+- How many neighbors should be used? k = ?
+- How is the distance between points measured?
+- How is the information from two or more neighbors combined when making a classification decision?
+- Should all points be weighted equally, or should some points have more influence?
+
+
+## Important Concepts 
+
+### Distance Function
+
+How is similarity defined between an unclassified record and its neighbors?
+
+A distance metric is a real-valued function d used to measure the similarity between coordinates x, y, and z with properties:
+
+1. $d(x,y) \geq 0$ and $d(x,y) =  0$ if and only if $ x = y $
+2. $d(x,y) = d(y,x) $
+3. $d(x,z) \leq d(x,y) + d(y,z) $
+
+In Plain English 
+
+- Property 1: Distance is always non-negative
+- Property 2: Commutative, distance from “A to B” is distance from “B to A”
+- Property 3: Triangle inequality holds, distance from “A to C” must be less than or equal to distance from “A to B to C”
+
+
+The *Euclidean Distance* function is commonly-used to measure distance
+
+$$
+d_{Euclidean}(x,y) = \sqrt{\sum_{i} (x_{i} - y_{i})^2}
+$$
+
+### Example 
+Suppose Patient A is 20-years-old ($x_{1} = 20$) and has a Na/K ratio = 12 ($x_{2} = 12$), and Patient B is 30-years-old ($y_{1} = 30$) and has a Na/K ratio = 8 ($y_{2} = 8$)
+What is the Euclidean distance between these instances?
+
+$$
+d_{Euclidean}(x,y) = \sqrt{\sum_{i} (x_{i} - y_{i})^2} = \sqrt{(20-30)^2 + (12-8)^2} = 10.77
+$$
+
+
+
+
+##Choosing k
+
+
+- What value of k is optimal?
+- There is not necessarily an obvious solution
+
+###Smaller k 
+Choosing a small value for k may lead the algorithm to overfit the data
+Noise or outliers may unduly affect classification
+
+###Larger k
+
+Larger values will tend to smooth out idiosyncratic or obscure data values in the training set
+It the values become too large, locally interesting values will be overlooked
+
+
+### Let's practice 
+
+
+# Train/Test data split 
+
+We split the data so we can give part of the data to the algorithm to build the model and we test this model by using data that have not been seen by the model. More like real exam :) 
+
+```{r}
+# split the data 
+#let's say we would like to get 80% of the data to train and 20% for testing 
+tr_prob <- 0.8 
+n <- dim(drug_df)[1]
+
+tr_idx <- sample(1:n, round(n*tr_prob))
+
+train_set <- drug_df[tr_idx,]
+test_set <- drug_df[-tr_idx,]
+
+
+```
+
+## Now let's do the calculation manually first :) 
+
+KNN works by calculating the distance. So let's do this 
+
+for our purposes we use different dataset that is smaller and we will only take 10 records as training set and 2 records as test set to deomonstrate the math first. 
+
+```{r}
+file_path <- here("datasets", "kNN-TwoAttributes-Continous.csv")
+df <- read.csv(file = file_path)
+tr_st <- df[1:10,]
+te_st <- df[11:12,]
+
+```
+
+
+This might look weird but we will actually bind the data together again. This is necessary to calculate the distance 
+
+```{r}
+x_te_tr <- rbind(tr_st[,2:3], te_st[,2:3])
+x_te_tr
+```
+
+We calculate the distance between each point and others using the `dist()` function. 
+
+```{r}
+# we will round to 3 decimals 
+
+round(dist(x_te_tr),3)
+
+```
+
+Let's see it as a matrix for to get better look at the results 
+
+```{r}
+Dist <- as.matrix(round(dist(x_te_tr),3))
+Dist
+```
+
+```{r}
+sort(Dist[11,]) 
+```
+
+if we choose K to be 3, then we have those records [10,8,9] to vote. 
+
+```{r}
+
+df[c(10,8,9),"Class"]
+```
+
+The vote is + . We will classify the point as +. 
+
+## Exercise .. Can you do the other point?
+
+
+
+## Important Considerations 
+
+KNN requires normalizing and scaling the data. We didn't do it here for the purpose of this lesson. 
+
+## Does R nice enough to make our lives easier? 
+
+Of Course!!. We can use `caret` package to do it. let's use our data from the drugs again. 
+
+```{r}
+
+# trainX <- train_set[,c("Age", "Na_Kratio")]
+# preprocessedX<-preProcess(x = trainX, method = c("center", "scale"))
+
+knnfit <- train(Drug ~ ., data = train_set, method = "knn", tuneGrid = expand.grid(k = 5))
+knnfit
+
+```
+
+## Let's make prediction 
+
+```{r}
+knnPredict <- predict(knnfit, newdata = test_set)
+```
+
+

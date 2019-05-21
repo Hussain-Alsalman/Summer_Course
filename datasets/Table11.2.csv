@@ -1,0 +1,9 @@
+Customer,Savings,Assets,Income,CreditRisk
+1,Medium,High,75,Good
+2,Low,Low,50,Bad
+3,High,Medium,25,Bad
+4,Medium,Medium,50,Good
+5,Low,Medium,100,Good
+6,High,High,25,Good
+7,Low,Low,25,Bad
+8,Medium,Medium,75,Good

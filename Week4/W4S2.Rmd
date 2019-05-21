@@ -1,0 +1,134 @@
+---
+title: "W4S2"
+author: "Hussain Alsalman"
+date: "5/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("here")
+library("broom")
+library("coefplot")
+library("useful")
+library("glmnet")
+library("DAAG")
+library("caret")
+library("ggplot2")
+```
+
+## What you will learn tonight 
+
+ - How to create *Elastic Net* model using cross validation
+ - How to select the optimal hyper-parameter lambda 
+ - How to deal with unbalanced classes 
+
+## So which lambda should we use cross validatoin 
+
+```{r}
+acs <- read.table("http://jaredlander.com/data/acs_ny.csv", sep=",", header=TRUE, stringsAsFactors=FALSE)
+
+acs <- acs %>% mutate( Income = as.factor(FamilyIncome >= 150000))
+
+formula_m <- Class ~ NumBedrooms + NumChildren + NumPeople + NumRooms + NumUnits + NumVehicles + NumWorkers + OwnRent + YearBuilt + ElectricBill + FoodStamp + HeatingFuel + Insurance + Language - 1
+
+
+
+## Assuming that we split the data,
+
+## is the class is balanced ?
+# we will go ahead and create our split for know and deal with this problem later 
+trainIndex <- createDataPartition(acs$Income, p = .9,list = FALSE)
+
+# Creating the training Set 
+train_set <- acs[trainIndex,]
+
+# Balancing the Classes ... this will be discussed later 
+upsample <- upSample(x = train_set[,-ncol(acs)],y =train_set$Income )
+
+## Creating the test Set 
+test_set  <- acs[-trainIndex,]
+
+# Renaming the Income to Class --- this is because upSample function change the name to "Class" :/
+names(test_set)[names(test_set) == "Income"] <- "Class"
+
+#Creating our Design matrix for the training set 
+train_X <- build.x(data = upsample, formula = formula_m, contrasts = FALSE, sparse = TRUE )
+train_y <- build.y(data = upsample,formula = formula_m)
+
+# Creating Design matrix X for testing set. 
+test_X <- build.x(data = test_set, formula = formula_m, contrasts = FALSE, sparse = TRUE )
+
+#just a visual to see that our data is not really balanced. 
+ggplot(data = acs, mapping = aes(x = FamilyIncome)) + geom_density() + 
+  geom_vline(xintercept = 150000)
+```
+
+```{r}
+
+# We do Cross validation fit. 
+cv_m1 <- cv.glmnet(x = train_X, y = train_y, family = "binomial", nfolds = 10, alpha = 0.5)
+
+```
+
+we just fitted the model 100 times with different labdas for 10 folds. This is a lot of models. But all for good cause :D 
+
+if we plot this now, we get differet type of plot 
+
+```{r}
+# In this plot we can see the error term "Deviance" across multiple values of Lambda 
+plot(cv_m1)
+```
+
+In the top of the graph we see the number of variables included. In the bottom we see the value of log lambda. the Y-Axis shows the deviance
+
+
+```{r}
+# This shows us the shrinkage of Beta 
+coefpath(cv_m1)
+```
+
+
+Now we can decided to have to choose between the minimum labda or lambda.1se .. statistically there is no difference between the two as the labda.1se is within one confidance interval of lambda min. 
+
+let's assume that we like the lambda.min
+
+we can again visualize the coefficient as we did before using the `coefplot()` function. 
+
+```{r}
+# this shows us the weights of Betas for the model with minimum lambda 
+coefplot(cv_m1, sort = "magnitude", lambda = "lambda.min")
+```
+
+ Btw glemnet did the scaling for us for free, Hooray. 
+ 
+# Let's do some prediction. 
+
+```{r}
+# Here we assess our model finally with testing set. A data that the model have not seen before. 
+
+# Predict give us probabilities... We still have to convert those to YES or NO
+value_prediciton <- predict(object = cv_m1, type = "response", newx = test_X, s="lambda.1se")
+
+pred <- ifelse (value_prediciton >= 0.5, TRUE,FALSE)
+
+# We create our Confusion Matrix and assess the values 
+caret::confusionMatrix(factor(pred), factor(test_set$Class),positive = "TRUE")
+DAAG::confusion(predicted = pred, actual = test_set$Class)
+
+```
+
+##This is how we read the confusion matrix 
+
+
+
+```{r, out.width='40%', fig.align='center'}
+knitr::include_graphics(path = here("Images","Sen_spec.gif"))
+```
+
+# Considerations:  hyper-perameters $\alpha$ and $\lambda$
+
+There are many ways to set those parameters. One way is to use `grid` which is basically a set of desired values that we would like to try for the hyper-perameters. We will not discuss grid here but it is important to know about it. 
+
+

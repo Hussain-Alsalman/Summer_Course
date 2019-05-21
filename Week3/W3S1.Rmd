@@ -11,6 +11,7 @@ library("here")
 library("ggplot2")
 library("gganimate")
 library("broom")
+library("DAAG")
 ```
 
 ## What We learned so far?
@@ -101,7 +102,7 @@ $$
 let's try to find better line
 
 
-```{r, eval= FALSE}
+```{r}
 line_df <- data.frame(
   a = round(seq(0,2,length.out = 50),2),
   b = round(seq(16,6, length.out = 50),2),
@@ -146,6 +147,7 @@ $$
 Notice at point `age = 6` and `income = 20`. The distance between our line and the **mean** is called the **Regression Error** or **Model Error** or **SSR**. 
 
 When we calculate this error we get 
+
 ```{r}
 round(anova(lm(income~age, data = reg_df))$`Sum Sq`[1]) 
 ```
@@ -207,7 +209,7 @@ a <-predict(m_1,newdata = new_df, se.fit = TRUE)
 
 ```{r}
 file_path <- here("datasets", "sat_and_college_gpa.txt")
-df_1<- read.table(file = file_path, head= TRUE, stringsAsFactors = FALSE, sep = " ", comment.char ="#" )
+df<- read.table(file = file_path, head= TRUE, stringsAsFactors = FALSE, sep = " ", comment.char ="#" )
 dim(df)
 ggplot(df, mapping= aes(y = univ_GPA, x = high_GPA)) + geom_point() + geom_smooth(method = 'lm', se = FALSE)
 
@@ -286,7 +288,7 @@ coefplot(mult_m)
 We will talk about cross validation later but it's good to know that we have another way to assess our model.
 
 ```{r}
-cv.lm(data = df_1, mult_m, m=10, dots = FALSE, seed=29, plotit=TRUE, printit=TRUE)
+cv.lm(data = df, mult_m, m=10, dots = FALSE, seed=29, plotit=TRUE, printit=TRUE)
 ```
 
 
