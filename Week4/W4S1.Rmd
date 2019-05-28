@@ -26,6 +26,8 @@ library("rpart.plot")
  
 ## Decision Trees
 
+A decision tree is a largely used non-parametric effective machine learning modeling technique for regression and classification problems. 
+
 - Popular classification method in data mining
 - Decision Tree is collection of decision nodes, connected by branches, extending downward from root node to terminating leaf nodes
  - Beginning with root node, attributes tested at decision nodes, and each possible outcome results in branch
@@ -51,11 +53,19 @@ rpart.plot(crt_tree,fallen.leaves = FALSE, type  = 5, extra = 8)
 
 ## Decision Trees Algorithms 
 
-There are many decision trees algorithm but 
+There are many decision trees algorithm but the most famous one are `CART` and `C4.5` or the updated `C5.0`. 
+
+## CART Alrogirthm 
+
+
 
 ## Controling the behavior of Decision Tree
 
+We can specify a many things related to the Tree Structure in the algorithm. 
 
+ - Minimum number of observations that must exist in a node in order for a split to be attempted
+ - Complexity parameter : Any split that does not decrease the overall lack of fit by a factor of cp is not attempted
+  
 
 ## REQUIREMENTS FOR USING DECISION TREES
 
