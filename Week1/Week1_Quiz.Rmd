@@ -1,5 +1,5 @@
 ---
-title: "Week1 Quiz"
+title: "First Week Quiz"
 output: 
   learnr::tutorial:
     progressive: true
@@ -10,46 +10,141 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
-source("www/week1_check_solutions.R")
+
 ```
 
 
-## Data Science Concepts
+## Definitions & Concepts
 
-### Multiple Choice Quiz 
+#### Select one correct answer
 
 ```{r q1}
   question("What is the definition of Data Science?",
-    answer("multi-disciplinary field that uses scientific methods and algorithms to extract knowledge", correct = TRUE),
-    answer("multi-disciplinary field that uses statistical methods to predict the target values"),
+    answer("Multi-disciplinary field that uses scientific methods and algorithms to extract knowledge", correct = TRUE),
+    answer("Multi-disciplinary field that uses statistical methods to predict the target values"),
     answer("It is a computer science field that focus on algorithms and models to gain insight"),
-    answer("data science is not actually a science"), 
+    answer("Data science is not actually a science"), 
     allow_retry = TRUE, 
     random_answer_order = TRUE
  
 )
 ```
 
+```{r q2}
+  question("Which order is the true order of level of measurements of data? (from lowest level to highest level)",
+    answer("Ordinal, Ratio, Catagorical, Nominal"),
+    answer("Nominal, Ordinal, Interval, Ratio", correct = TRUE),
+    answer("Nominal, Ordinal, Ratio, Interval" ),
+    answer("Ratio, Nominal, Ordinal, Interval"),
+    answer("Ordinal, Ratio, Nominal, Catagorical"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+```
+
+
+```{r q3}
+  question("In CRISP-DB, Business Understanding phase is about",
+    answer("Identifying the problem and setting the objective of the project", correct = TRUE),
+    answer("Understand everything about the business"),
+    answer("Collecting data for analysis"),
+    answer("Opening new business"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+```
+
+```{r q4}
+  question("In CRISP-DB, Data Preparation phase is about",
+    answer("Cleaning up the data and preprocesing it into suitable format for modeling", correct = TRUE),
+    answer("Understanding the way the data was collected and the systems generating data"),
+    answer("Saving data in excel format"),
+    answer("Making sure computer hard-drive is clean from dust"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+```
+
+```{r q5}
+  question("The process of breaking tables apart and thereby reducing data redundancy is called",
+    answer("Normalization", correct = TRUE),
+    answer("Duplication"),
+    answer("Transformation"),
+    answer("Table Breaking"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+```
+
+
+#### Select all correct answers. 
+
+```{r q6}
+  question("Select all that are examples of structured data",
+    answer("Family photos"),
+    answer("Phone contacts", correct = TRUE),
+    answer("Customers Records", correct = TRUE),
+    answer("Blogs"),
+    answer("Medical Appoinments", correct = TRUE),
+    answer("Youtube Videos"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE,
+    type = "multiple"
+)
+```
+
+
+```{r q7}
+  question("Select all that are examples of unstructured data",
+    answer("presentations", correct = TRUE),
+    answer("Phone contacts"),
+    answer("Customers Records"),
+    answer("Songs", correct = TRUE),
+    answer("Medical Appoinments"),
+    answer("Youtube Videos", correct = TRUE),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE,
+    type = "multiple"
+)
+```
+
+```{r q8}
+  question("Select all that considered main tasks of data scientist",
+    answer("Describe data", correct = TRUE),
+    answer("Create new data"),
+    answer("Classify data", correct = TRUE),
+    answer("Predict data", correct = TRUE),
+    answer("Buy data"),
+    answer("Identify associations with data", correct = TRUE),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE,
+    type = "multiple"
+)
+```
+
+
+#### True or False
+
+```{r q9}
+  question("Nominal and Ordinal are catagorical types",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+```{r q10}
+  question("Ratio level has no absolute zero",
+    answer("TRUE"),
+    answer("FALSE", correct = TRUE),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
 
 
 ## Simple Operators
 
 
-
-
-Write the R code required to add two plus two:
-
-```{r tpt, exercise=TRUE, exercise.checker = check_ex1, exercise.lines =1}
-
-```
-
-```{r tpt-check}
-check_ex1(  label,
-  user_code,
-  solution_code,
-  check_code,
-  envir_result,
-  evaluate_result,
-  envir_prep,
-  ...)
-```

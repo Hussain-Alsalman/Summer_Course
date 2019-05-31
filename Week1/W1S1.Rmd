@@ -19,43 +19,43 @@ library("animation")
 This course is divided into three Parts
 
 - **Part 1:** Getting Started with R for Data Science 
-    - Introduction to Data Science. 
+    - Introduction to data science. 
     - CRISP-DM
-    - R Programming Language.
+    - R programming language.
     - Data Scientist's Tools (Git + Github + Rstudio).
-    - Brief introduction to Data Visualization
+    - Brief introduction to data visualization
 
 ## Welcom to DS.. Continue {.build}
 
 - **Part 2:** Data Wrangling & Statistics
-    - Reading Data from different Sources. 
-    - Handling inconsistent,missing Data & Anomolies
-    - Data Normalization & Transformation
-    - Dimension Reduction
-    - Intro to Statistics
+    - Reading data from different sources. 
+    - Handling inconsistent,missing data & outliers
+    - Data normalization & transformation
+    - Dimension reduction
+    - Intro to statistics
     
 ## Welcom to DS.. Continue {.build}
 - **Part 3:** Modeling and Evaluation
     - Supervised Learning
-        - linear Regression 
-        - logestic Regression 
-        - Decision Trees
-        - K-NN Clustering
+        - Linear regression 
+        - Logestic regression 
+        - Decision trees
+        - K-NN classification
     - Unupervised Learning
-        - K-Mean Clustering
-        - Hierarchical Clustering
+        - K-Mean clustering
+        - Hierarchical clustering
     - Association Rules
     
-## Data Are everywhere 
+## Data are everywhere 
 
 ```{r, out.width='100%'}
 knitr::include_graphics(path = here("Images", "Session1.gif"))
 ```
 
  
-## Why Study Data Science?
+## Why study data science?
 
-**Dell Sales Reps Productivity**
+**Dell sales reps productivity**
 
 
 | Problem 	| Sales reps spend a lot of time doing online research and gathering information from disparate sources before they actually engage with a sales prospects 	|
@@ -68,7 +68,7 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 
 ----
 
-**Massachusetts Medicaid fraudulent Claims**
+**Massachusetts medicaid fraudulent claims**
 
 | Problem 	| There were many fraudulent medicaid claims that has been costing Massachusetts State millions of dollars    	|
 |-----------	|----------------------------------------------------------------------------------------------------------------------------------------	|
@@ -80,7 +80,7 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 
 ----
 
-**IBM & Epic Predective Model saves lives**
+**IBM & epic predective model saves lives**
 
 | Problem 	| Carilion Clinic will have to spend years to go over their data to identify patients with risk of heart failure. By then it will be too late 	|
 |-----------	|---------------------------------------------------------------------------------------------------------------------------------------------	|
@@ -92,7 +92,7 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 
 ----
 
-**President Obama’s campaign**
+**President obama’s campaign**
 
 | Problem 	| Obama Campaign Staff needed to focus on the people who are more likely to vote and make sure they vote  	|
 |-----------	|------------------------------------------------------------------------------------------------------------------------------------------------	|
@@ -104,27 +104,29 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 
 ## What is Data Science?
  
-**Data Science** 
+**Data science** 
 
 is a multi-disciplinary field that uses **scientific methods**, processes, **algorithms** and systems to **extract knowledge** and insights from structured and unstructured data.  ~ _[Wikipedia](https://en.wikipedia.org/wiki/Data_science)_
 
 
 
-## When do we need to use Data Science 
+## When do we need to use data science 
 
-Solving problems is not new. Scientists in many fields have been solving complex problems using mathimatical & algorithmic approaches. For example, Newton laws are equations that are used to solve wide range of physics problems. However, there are problems that are impossible to solve mathimatically. In those cases we will need a learning approach. 
+We need to make sense of the world around us. Scientists in many fields have been developing mathimatical models to explain and predict many natural phenomenon for years. For example, physicists observe the motion of planets and try to make equations to explain it. They believe that events are indicative to the underlying truth. 
+
+Data scienintist do exactly the same. We collect data because we believe that there is an underlying pattern to discover. Data science uses computer algorithms to automte the process of modeling the pattern of phenomenon. 
 
 
-## The way Scientists see the world 
+## The way scientists see the world 
 
-There is an equation for every problem on this earth. This equation is $f : x \rightarrow y $. Because it is impossible to find this equation exactly we approximate it using data. In other words, instead of trying to find the equation we look at the data and try to extract an equation that best fit. 
+There is an equation for every problem on this earth. This equation or process is $f : x \rightarrow y $. Because it is sometimes impossible to find this equation exactly we approximate it using data. In other words, instead of trying to find the equation we look at the data and try to extract an equation that best fit. 
 
 instead of finding the true $f$ we try to find $g$ where $g \approx f$. 
 
 
-## What are the types of Data?
+## What are the types of data?
 
-- Structured Data 
+- Structured data 
     - Data that has pre-defined format. We mainly refer to the data that can be stored in tabular format. 
     
 ```{r, out.width='80%', fig.align='center'}
@@ -132,23 +134,23 @@ knitr::include_graphics(path = here("Images","Pivot-Table-Data-Source-Structure.
 ```
     
 
-## What are the types of Data?
+## What are the types of data?
 
-- Unstructured Data 
+- Unstructured data 
    - Those include everything else, from texts on websites and social media to uploaded videos and music. 
   
 ```{r, out.width='80%', fig.align='center'}
 knitr::include_graphics(path = here("Images","unstructured_data_examples.png"))
 ```
   
-## Structured VS Unstructured 
+## Structured vs unstructured 
 
 ```{r, out.width='80%', fig.align='center'}
 knitr::include_graphics(path = here("Images","structured-unstructured.jpg"))
 ```
 
 
-## Structured VS Unstructured 
+## Structured vs unstructured 
 
 Dealing with unstructured data is beyond the scope of this course. So we will focus on Structure data in this course.
 
@@ -169,7 +171,7 @@ knitr::include_graphics(path = here("Images","summary-of-data-types-and-scales-7
 ```
 
 
-## Tasks of Data Scientist
+## Tasks of data scientist
 
 Data Scienctists are invlolved in a mainly 5 tasks in their daily work. They try to 
 
@@ -181,7 +183,7 @@ Data Scienctists are invlolved in a mainly 5 tasks in their daily work. They try
 
 We will explore those 5 tasks in the next slides in details. 
 
-## Tasks of Data Scientist
+## Tasks of data scientist
 
 - Description
     - This involved conducting Exploratory Analysis & Descriptive statistics.
@@ -191,10 +193,10 @@ We will explore those 5 tasks in the next slides in details.
 ---- 
 
 <h3><b>
-Example of Description 
+Example of description 
 </b></h3>
 
-Here is a students Data that includes GPA and GRE scores, rank of the school they applied to and whether they got admited or not.  
+Here is a students data that includes GPA and GRE scores, rank of the school they applied to and whether they got admited or not.  
 
 ```{r}
 ### <b>
@@ -208,9 +210,9 @@ summary(df)
 
 
 
-## Tasks of Data Scientist
+## Tasks of data scientist
 
-- Estimation & Prediction
+- Estimation & prediction
     - We use _categorical_ or/and _numerical_ predictors to predict/estimate _numerical_ target variable
     - In this task we try to uncover trends and understand the relationship between the variables.
     - If we use this knowledge and extend it to new data sets, then we are trying to predict values. 
@@ -218,7 +220,7 @@ summary(df)
 
 ----
 <h3><b>
-Estimation & Prediction
+Estimation & prediction
 </b></h3>
 
 In this standard linear regression model. We visualize the relationship between GPA & GRE. We also can exrapolate the model and make predictions.  
