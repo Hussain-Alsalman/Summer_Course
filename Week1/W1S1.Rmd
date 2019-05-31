@@ -40,9 +40,8 @@ This course is divided into three Parts
         - linear Regression 
         - logestic Regression 
         - Decision Trees
-        - Random Forest
-    - Unupervised Learning
         - K-NN Clustering
+    - Unupervised Learning
         - K-Mean Clustering
         - Hierarchical Clustering
     - Association Rules
@@ -108,6 +107,20 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 **Data Science** 
 
 is a multi-disciplinary field that uses **scientific methods**, processes, **algorithms** and systems to **extract knowledge** and insights from structured and unstructured data.  ~ _[Wikipedia](https://en.wikipedia.org/wiki/Data_science)_
+
+
+
+## When do we need to use Data Science 
+
+Solving problems is not new. Scientists in many fields have been solving complex problems using mathimatical & algorithmic approaches. For example, Newton laws are equations that are used to solve wide range of physics problems. However, there are problems that are impossible to solve mathimatically. In those cases we will need a learning approach. 
+
+
+## The way Scientists see the world 
+
+There is an equation for every problem on this earth. This equation is $f : x \rightarrow y $. Because it is impossible to find this equation exactly we approximate it using data. In other words, instead of trying to find the equation we look at the data and try to extract an equation that best fit. 
+
+instead of finding the true $f$ we try to find $g$ where $g \approx f$. 
+
 
 ## What are the types of Data?
 

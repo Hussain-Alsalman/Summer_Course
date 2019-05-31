@@ -267,7 +267,6 @@ plot(m1, xvar = "lambda")
 coefpath(m1)
 ```
 
-
 #
 
 

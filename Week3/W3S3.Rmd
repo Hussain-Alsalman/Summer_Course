@@ -88,8 +88,12 @@ g1 + geom_point(data = patients, mapping = aes(x = Age, y = Na_Kratio, shape = n
  
 Which drug should Patient 1,2 and 3 be prescribed?
 
-#- open Discussion 
+##open Discussion 
 
+-
+-
+-
+-
 
 
 
@@ -133,23 +137,6 @@ $$
 d_{Euclidean}(x,y) = \sqrt{\sum_{i} (x_{i} - y_{i})^2} = \sqrt{(20-30)^2 + (12-8)^2} = 10.77
 $$
 
-
-
-
-##Choosing k
-
-
-- What value of k is optimal?
-- There is not necessarily an obvious solution
-
-###Smaller k 
-Choosing a small value for k may lead the algorithm to overfit the data
-Noise or outliers may unduly affect classification
-
-###Larger k
-
-Larger values will tend to smooth out idiosyncratic or obscure data values in the training set
-It the values become too large, locally interesting values will be overlooked
 
 
 ### Let's practice 
@@ -252,4 +239,36 @@ knnfit
 knnPredict <- predict(knnfit, newdata = test_set)
 ```
 
+
+##Choosing k
+
+- What value of k is optimal?
+- There is not necessarily an obvious solution
+
+####Smaller k 
+Choosing a small value for k may lead the algorithm to overfit the data
+Noise or outliers may unduly affect classification
+
+####Larger k
+
+Larger values will tend to smooth out idiosyncratic or obscure data values in the training set
+It the values become too large, locally interesting values will be overlooked
+
+### Choosing the optimal K by using the Elbow method. 
+
+There is a method called Elbow method. Which is basically trying an increasing number of K and find the most optimal K based on a graph (elbow shape) that display the decline or errors or improvement of the model for different Ks. 
+
+
+```{r}
+tr_ctr<- trainControl(method = "repeatedcv", number = 10, repeats = 5 )
+knnfit_elbow <- train(Drug ~ ., data = train_set, method = "knn", trControl = tr_ctr, preProcess = c("center", "scale"),tuneLength = 10)
+knnfit_elbow
+```
+
+
+```{r}
+knnfit_elbow$results %>% 
+ggplot(aes(x = k, y = 1-Accuracy)) + geom_line( ) + geom_point(aes(color = k == 13), show.legend = FALSE) + scale_color_manual( values =  c("red", "green")) 
+
+```
 

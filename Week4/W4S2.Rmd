@@ -101,7 +101,7 @@ we can again visualize the coefficient as we did before using the `coefplot()` f
 coefplot(cv_m1, sort = "magnitude", lambda = "lambda.min")
 ```
 
- Btw glemnet did the scaling for us for free, Hooray. 
+Btw glemnet did the scaling for us for free, Hooray. 
  
 # Let's do some prediction. 
 

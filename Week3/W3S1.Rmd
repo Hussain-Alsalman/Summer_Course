@@ -46,6 +46,11 @@ knitr::include_graphics(path = here("Images","Supervised_machine_learning_in_a_n
 
 **Unsupervised learning** is a modeling technique that you use when you dont have labeled. perfectly labeled datasets aren’t easy to come by. And sometimes, researchers are asking the algorithm questions they don’t know the answer to
 
+##
+
+
+##
+
 # Linear Regression 
 
 ## So what is Linear Regression model?

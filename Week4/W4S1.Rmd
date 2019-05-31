@@ -14,6 +14,8 @@ library("caret")
 library("C50")
 library("rpart")
 library("rpart.plot")
+library("useful")
+library("xgboost")
 ```
 
 ## What you will learn tonight 
@@ -45,9 +47,6 @@ file_path <- here("datasets", "Table11.2.csv")
 credit_risk <- read.csv(file = file_path)
 
 crt_tree <- rpart(data = credit_risk, CreditRisk~ Savings+ Assets + Income, control = rpart.control(minsplit=1, cp=0.000001) )
-# predictors <- credit_risk[,c("Savings","Assets","Income")]
-# d_tree <-C5.0(x =predictors, y = credit_risk[,"CreditRisk"] ,control = C5.0Control(subset = TRUE),)
-# plot(d_tree)
 rpart.plot(crt_tree,fallen.leaves = FALSE, type  = 5, extra = 8)
 ```
 
@@ -58,7 +57,6 @@ There are many decision trees algorithm but the most famous one are `CART` and `
 ## CART Alrogirthm 
 
 
-
 ## Controling the behavior of Decision Tree
 
 We can specify a many things related to the Tree Structure in the algorithm. 
@@ -67,13 +65,237 @@ We can specify a many things related to the Tree Structure in the algorithm.
  - Complexity parameter : Any split that does not decrease the overall lack of fit by a factor of cp is not attempted
   
 
-## REQUIREMENTS FOR USING DECISION TREES
+## Requirements For Using Decision Trees
 
 - Decision tree algorithms represent supervised learning, and as such require preclassified target variables. A training data set must be supplied which provides the algorithm with the values of the target variable
 - This training data set should be rich and varied, providing the algorithm with a healthy cross section of the types of records for which classification may be needed in the future. Decision trees learn by example, and if examples are systematically lacking for a definable subset of records, classification and prediction for this subset will be problematic or impossible
 - The target attribute classes must be discrete. That is, one cannot apply decision tree analysis to a continuous target variable. Rather, the target variable must take on values that are clearly demarcated as either belonging to a particular class or not belonging
 
 
+## C50 Alrogirthm
+
+```{r}
+predictors <- credit_risk[,c("Savings","Assets","Income")]
+d_tree <-C5.0(x =predictors, y = credit_risk[,"CreditRisk"] ,control = C5.0Control(minCases = 2,earlyStopping = FALSE))
+plot(d_tree)
+```
 
 
- 
+
+# Boosting
+
+Boosting is a popular way to improve predictions, particularly for decision trees. The main
+idea is that the model, or rather models, learn slowly through sequential fitting. First, a
+model is fit on the data with all observations having equal weight. Then the observations
+for which the model performed poorly are upweighted and the observations for which the
+model performed well are downweighted and a new model is fit. This process is repeated a
+set number of times and the final model is the accumulation of these little models
+
+
+## Real Example with boosting
+
+### Backgroaund 
+
+You can read the background of the data on this [link](http://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)).
+
+
+#### 1. Reading the data 
+
+Note: The data is stored in a space-separated text file with no headers where categorical data have been labeled with non-obvious codes. It would be better to review the data description provided by the _domain expert_. 
+
+
+
+```{r}
+url_file <- "http://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.data"
+credit <- read.table(file = url_file, sep =" ", header = FALSE)
+```
+
+#### 2. Preprocessing Data, 
+We will need to add the column names first. 
+
+```{r}
+#Creating a column names vector and assign it to the data base 
+creditNames <- c ("Checking",
+                  "Duration",
+                  "CreditHistory",
+                  "Purpose","CreditAmount",
+                  "Savings",
+                  "Employment","InstallmentRate",
+                  "GenderMarital",
+                  "OtherDebtors","YearsAtResidence",
+                  "RealEstate",
+                  "Age",
+                  "OtherInstallment",
+                  "Housing",
+                  "ExistingCredits",
+                  "Job", 
+                  "NumLiable", 
+                  "Phone", 
+                  "Foreign",
+                  "Credit")
+
+names(credit) <- creditNames
+```
+
+
+Now we have to translate those weird codes into meaningful values. 
+
+```{r}
+
+credit_cln <- credit %>% 
+  
+  mutate(CreditHistory= recode(CreditHistory,
+                               A30="All Paid",
+                               A31="All Paid This Bank",
+                               A32="Up To Date",
+                               A33="Late Payment",
+                               A34="Critical Account")) %>% 
+  
+  mutate(Purpose = recode(Purpose,
+                          A40="car (new)",
+                          A41="car (used)",
+                          A42="furniture/equipment",
+                          A43="radio/television",
+                          A44="domestic appliances",
+                          A45="repairs",
+                          A46="education",
+                          A47="(vacation - does not exist?)",
+                          A48="retraining",
+                          A49="business",
+                          A410="others")) %>% 
+  
+  mutate(Employment = recode(Employment, 
+                             A71="unemployed",
+                             A72="< 1 year",
+                             A73="1 - 4 years",
+                             A74="4 - 7 years",
+                             A75=">= 7 years")) %>% 
+  
+  mutate(Credit = recode_factor(Credit, 
+                                "1"="Good",
+                                "2"="Bad", .default = levels(c("Good", "Bad")))) %>% 
+  mutate(Gender = recode_factor(GenderMarital, 
+                                A91 ="male", 
+                                A92 = "female", 
+                                A93= "male", 
+                                A94= "male", 
+                                A95 = "female", .default = levels(c("male", "female")))) %>% 
+  mutate(Job = recode(Job, 
+                      A171 = "unemployed",
+                      A172 = "unskilled",
+                      A173 = "skilled employee",
+                      A174 = "management")) %>% 
+  mutate(Phone = recode(Phone, 
+                        A191 = "No", 
+                        A192 = "Yes"
+                        )) %>% 
+  mutate(Foreign = recode(Foreign, 
+                        A201 = "yes",
+                        A202 = "no" )) %>% 
+  mutate(Housing = recode(Housing, 
+                          A151 = "rent",
+                          A152 = "own",
+                          A153 ="free")) %>% 
+  mutate(OtherInstallment = recode(OtherInstallment, 
+                                   A141 = "bank",
+                                   A142 = "stores",
+                                   A143 = "none")) %>% 
+  mutate(RealEstate = recode(RealEstate, 
+                             A121 = "real estate",
+                             A122 = "life insurance",
+                             A123 = "car or other",
+                             A124 = "no property")) %>%
+  mutate(Savings = recode(Savings,
+                          A61 = "less than 100 DM",
+                          A62 = "100 - 500 DM",
+                          A63 = "500 - 1000 DM",
+                          A64 = "more than 1000 DM",
+                          A65 = "no savings account" 
+                          )) %>% 
+  mutate(OtherDebtors= recode(OtherDebtors, 
+                              A101 = "none",
+                              A102 = "co-applicant",
+                              A103 = "guarantor"
+                              )) %>% 
+  mutate(Checking = recode(Checking,
+                           A11 = "less than 0 DM",
+                           A12 = "0 - 200 DM",
+                           A13 = "more than 200 DM",
+                           A14 = "no checking account" )) %>%  select(-GenderMarital) #%>%  anyNA()
+
+
+```
+
+#### 3. Feature Selection 
+
+We can select the features that we believe are most important to the model. This is usually done with the domain expert. 
+
+```{r}
+sub_credit <- credit_cln %>% select(Credit, CreditHistory, Purpose, Employment, Duration, Age, CreditAmount)
+```
+
+#### 4. Build model 
+
+We now can construct our model in `formula` format for R 
+
+```{r}
+Credit_Formula <- Credit ~ CreditHistory + Purpose + Employment +
+Duration + Age + CreditAmount - 1
+```
+
+
+#### 5. Formulating the Design Matrix  in order to use it for the xgboost
+```{r}
+
+creditX <- build.x(Credit_Formula, data=sub_credit, contrasts=FALSE)
+creditY <- build.y(Credit_Formula, data=sub_credit)
+creditY <- as.integer(relevel(creditY, ref = "Bad"))-1
+```
+
+#### 6. Building the model using the boosting method
+
+The predictor `matrix` and response `vector` are supplied to the `data` and `label`
+arguments, respectively. The `nrounds` argument determines the number of passes on
+the data. Too many passes can lead to overfitting, so thought must go into this
+number. The learning rate is controlled by `eta` , with a lower number leading to less
+overfitting. The maximum depth of the trees is indicated by `max.depth` . Parallel
+processing is automatically enabled if OpenMP is present, and the number of
+parallel threads is controlled by the `nthread` argument. We specify the type of model
+with the `objective` argument.
+
+```{r}
+creditBoost <- xgboost (data=creditX, label=creditY, max.depth=3,
+eta=.3, nthread=4, nrounds=20, objective="binary:logistic")
+
+```
+
+
+We see in the output the error rate decreasing with each round. 
+
+#### 7. Making Prediction 
+
+we can make prediction by using the `predict` function. We have not split the data in this case, so we will just use some of the training data instead. 
+
+```{r}
+set.seed(123)
+test_data <- sub_credit[sample(100),]
+test_x <- build.x(Credit_Formula, data=test_data, contrasts=FALSE)
+preds <- predict(object = creditBoost, newdata =test_x )
+
+preds <- ifelse(preds > 0.5, 1, 0)
+
+```
+
+
+#### 8. Evaluation 
+
+We can use `caret` confusion matrix to evaluate
+
+```{r}
+
+confusionMatrix()
+
+```
+
+
+

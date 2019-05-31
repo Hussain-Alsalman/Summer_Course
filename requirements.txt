@@ -25,7 +25,8 @@ req_packages <- c("devtools",
  		"ggforce",
  		"C50",
  		"rpart",
- 		"rpart.plot")
+ 		"rpart.plot",
+ 		"xgboost")
 
 install.packages(req_packages)
 
