@@ -145,6 +145,246 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-## Simple Operators
+## Git commands
 
+#### Select one correct answer
+
+```{r q11}
+  question("In order to initiate new Git repository we use the comand",
+    answer("`git init`", correct = TRUE),
+    answer("`git status`"),
+    answer("`git branch`"),
+    answer("`git commit`"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+```{r q12}
+  question("You created and new file named `fun.txt` in your working directory, you made changes and you want to commit, how do you do it?",
+    answer("Start tracking the file first by `git add fun.txt` then commit", correct = TRUE),
+    answer("Start by using `git status` to see the current changes then commit"),
+    answer("Git will add the file automatically when you run this command `git commit`"),
+    answer("You can't add new files to the Git repository after initiation"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+```{r q13}
+  question("How to tell Git to ignore certain files?",
+    answer("Add the file name to `.gitignore` file", correct = TRUE),
+    answer("You need to create sub-repository that parent git can't track"),
+    answer("Change the name of the file everytime you make changes"),
+    answer("Simply `git ignore` then file name"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+```{r q14}
+  question("How to merge to a branch `master` with branch `featureB`",
+    answer("we checkout to `featureA` by `git checkout feastureA` then `git merge feastureB`", correct = TRUE),
+    answer("we checkout to `featureB` by `git checkout feastureB` then `git merge feastureA`"),
+    answer("`git merge feastureA featureB`"),
+    answer("`git merge`, Git will know what to do"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+```{r q15}
+  question("How to switch to a branch named `feastureB`",
+    answer("`git branch featureA`", correct = TRUE),
+    answer("`git checkout -b featureA`", correct = TRUE),
+    answer("`git branch -d featureA`", message = "be careful this will actually delete the branch `featureA` if it exists"),
+    answer("`git create branch featureA`"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+#### Select all correct answers. 
+
+```{r q16}
+  question("How to start new branch named `featureA`",
+    answer("`git branch featureA`", correct = TRUE),
+    answer("`git checkout -b featureA`", correct = TRUE),
+    answer("`git branch -d featureA`", message = "be careful this will actually delete the branch `featureA` if it exists"),
+    answer("`git create branch featureA`"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE,
+    type = "multiple"
+)
+```
+
+
+## R Programming
+
+#### All the below are exercises that are not evaluated but good for practice 
+
+##### Operations, Variables and Types.  
+
+```{r preperations}
+x <- list(a = 19, b = "Data Science", c = matrix(1:10, nrow = 5, byrow = TRUE))
+y <- as.Date("2020-02-14")
+df <- data.frame(numbers = sample(10), products = c("Bread", "Rice", "Olive Oil", "Soup", "Chocolate", "Milk", "Banana", "Cheese", "Soda", "Apple"))
+cars_df <- cars
+```
+Perform the follwoing taks:
+
+  - Add 13 to 347 then divide by 32.(_bonus_): round to nearest integer,_hint_: use `round()` functions. 
+
+
+```{r q17, exercise = TRUE, exercise.lines = 3, exercise.eval = FALSE}
+
+```
+
+  - What is the class of the `x`?
+  - What is the class of element `c` in `x`?
+  - Is element `b` an integer? _bonus_: if character how many characters?
+  - Change the value of element `a` to `100`
+  - Multiple element `a` by `3.4` and save it in element `d`
+  - What is the class of element `d`. _think why `d` is not integer_
+
+```{r q18, exercise = TRUE, exercise.lines = 15,exercise.setup = "preperations", exercise.eval = FALSE}
+x
+```
+
+##### Dates  
+
+###### Challenge 
+
+Install the ``lubridate`` package and refer to the [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf) to perform the following 
+
+- Extract the year from variable `y`
+- Extract the name of the month from variable `y`
+- What day of the week is `y`
+- What would the date be after 14 days from `y`
+
+```{r q19, exercise = TRUE, exercise.lines = 15,exercise.setup = "preperations", exercise.eval = FALSE}
+#library("lubridate")
+y
+```
+
+
+##### Data Frames  
+
+Perform the following for the data frame `df` 
+
+- Display the first 10 records from `df`
+- Extract the dimension of the `df`. _hint_: get the number of rows and columns.
+- Change the name of the first column to `quantity`
+- Slice the `df` to include only the second column and rows from 4 to 7._hint_: to perserve type of data.farme use `drop` argument.
+- Print summary of the data frame. 
+
+```{r q20, exercise = TRUE, exercise.lines = 15,exercise.setup = "preperations", exercise.eval = FALSE}
+df
+```
+
+##### Graphing in R
+
+Perform the following in both base R and `ggplot2` package.
+
+- Generate a histogram of the `speed` column with 10 bins. *bonus*: color graph with "violet" and set title to "Histogram" and x label to "Speed".
+- Generate a scatterplot with `speed` on the y-axis and `dist` on x-axis. *bonus*: color values above 10 differently.  
+- Generate a boxplot for `dist`
+
+###### Base R 
+
+- Generate a histogram of the `speed` column with 10 bins. *bonus*: color graph with "violet" and set title to "Histogram" and x label to "Speed".
+- Generate a scatterplot with `speed` on the y-axis and `dist` on x-axis. *bonus*: color values above 10 differently.  
+- Generate a boxplot for `dist`
+
+```{r q21, exercise = TRUE, exercise.lines = 15,exercise.setup = "preperations", exercise.eval = FALSE}
+cars_df
+```
+
+###### `ggplot2` graphics 
+
+Use the `ggplot2` package and refer to the [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) to perform the previous graphs
+
+```{r q22, exercise = TRUE, exercise.lines = 20,exercise.setup = "preperations", exercise.eval = FALSE}
+cars_df
+```
+
+
+
+```{r q17-solution}
+(13+347)/32
+```
+
+```{r q18-solution}
+#Class of x
+class(x)
+#class of element c in x
+class(x$c)
+#checking if element b is numeric 
+is.integer(x$b)
+nchar(x$b)
+#Changing the value of element a to 100
+x$a <- 100
+#Multiple element `a` by `3.4` and save it in element `d`
+x$d <- x$a * 3.4
+#What is the class of element `d`
+class(x$d)
+```
+
+```{r q19-solution}
+library("lubridate")
+#extracting the year
+year(y)
+#extracting the name of the month
+month(y,label = TRUE, abbr = FALSE)
+#Day of the week is 
+wday(y, label = TRUE, abbr = FALSE)
+#What would the date be after 14 days from `y`
+y + days(14)
+```
+
+
+```{r q20-solution}
+#Display the first 6 records from `df`
+head(df,n = 6)
+#Extract the dimension of the `df`. _hint_: get the number of rows and columns.
+dim(df)
+#Change the name of the first column to `quantity`
+colnames(df)[1] <- "quantity"
+#Slice the `df` to include only the second column and rows from 4 to 7. 
+df[4:7,2, drop = FALSE]
+#Print summary of the data frame. 
+summary(df)
+```
+
+```{r q21-solution}
+#Generate a histogram of the `speed` column
+hist(cars_df$speed, breaks = 10)
+# Bonus question
+hist(cars_df$speed, breaks = 10,col = "violet", main = "Histogram", xlab = "Speed")
+#Generate a scatterplot with `speed` on the y-axis and `dist` on x-axis. *bonus*: color speed values above 10 differently. 
+plot(y =cars_df$speed, x = cars_df$dist)
+# Bonus question
+plot(y =cars_df$speed, x = cars_df$dist, col = ifelse(cars_df$speed > 10, "black", "red"))
+#Generate a boxplot for `dist`
+boxplot(cars_df$dist)
+```
+
+```{r q22-solution}
+library("ggplot2")
+#Generate a histogram of the `speed` column
+ggplot(data = cars_df, mapping = aes(x = speed)) + geom_histogram(bins = 10, color = "black")
+# Bonus question
+ggplot(data = cars_df, mapping = aes(x = speed)) + 
+  geom_histogram(bins = 10, color = "black", fill ="violet") +
+  labs(title = "Histogram", xlab = "Speed")
+#Generate a scatterplot with `speed` on the y-axis and `dist` on x-axis. *bonus*: color speed values above 10 differently. 
+ggplot(data = cars_df, mapping = aes(x = dist,y = speed)) +
+  geom_point()
+# Bonus question
+ggplot(data = cars_df, mapping = aes(x = dist,y = speed)) +
+  geom_point(aes(color =ifelse(speed > 10, "black", "red")),show.legend = FALSE)
+#Generate a boxplot for `dist`
+ggplot(data = cars_df, mapping = aes(y = dist)) + geom_boxplot()
+```
 

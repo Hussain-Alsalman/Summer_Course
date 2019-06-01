@@ -168,7 +168,7 @@ nchar(y)
 Dealing with dates in R can be very challenging because R has too many flavors of `date` types. The most useful and common are `Date` and `POSIXct.Date`. `Date` stores only dates but `POSIXct.Date` stores dates and time. Both objects are actually represented as the number of days ( `Date` ) or seconds ( `POSIXct` ) since January 1, 1970 
 
 ```{r}
-date1 <- as.Date ("2019-06-1")
+date1 <- as.Date("2019-06-1")
 class(date1)
 ```
 

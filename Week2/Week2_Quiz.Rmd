@@ -1,0 +1,382 @@
+---
+title: "Second Week Quiz"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+library("dplyr")
+```
+
+## Definitions & Concepts
+
+#### Select one correct answer
+
+```{r q1}
+  question("What are the types of data?",
+    answer("Qunatitative and Categorical", correct = TRUE),
+    answer("Clean and Not Clean"),
+    answer("True Data and False Data"),
+    answer("Nominal and Ordinal"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q2}
+  question("one way we describe Quantiative data is by ...",
+    answer("Mean", correct = TRUE),
+    answer("Counts"),
+    answer("Percentages"),
+    answer("Groups"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q3}
+  question("one way we describe Categorical data is by ...",
+    answer("Mean"),
+    answer("Counts", correct = TRUE),
+    answer("Interquartile Range (IQR)"),
+    answer("Median"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q4}
+  question("We should probably delete variables that are mostly ...",
+    answer("Unary", correct = TRUE),
+    answer("Binary"),
+    answer("Secondary"),
+    answer("We should never delete any variables"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q5}
+  question("When we convert categorical data with 3 classes into dummy variables we get ..... additional variables",
+    answer("2", correct = TRUE),
+    answer("3"),
+    answer("4"),
+    answer("Dummy variables are useless"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+
+```{r q6}
+  question("We can convert Quantitative data to Categorical by",
+    answer("Bining", correct = TRUE),
+    answer("Translation"),
+    answer("Changing type to string"),
+    answer("Converting data is not advisable"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+#### Select all correct answers. 
+
+```{r q7}
+  question("Select all that are examples of Quantitative Data",
+    answer("Height", correct = TRUE),
+    answer("Age", correct = TRUE),
+    answer("National ID number"),
+    answer("Phone numbers"), 
+    answer("Price", correct = TRUE),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+ 
+)
+```
+
+
+```{r q8}
+  question("Select all that are examples of Categorical Data",
+    answer("Nationality", correct = TRUE),
+    answer("Religion", correct = TRUE),
+    answer("Weight"),
+    answer("Phone numbers", correct = TRUE), 
+    answer("Price"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+ 
+)
+```
+
+```{r q9}
+  question("To measure the centerality of data we can use ...",
+    answer("Mean", correct = TRUE),
+    answer("Median", correct = TRUE),
+    answer("Range"),
+    answer("Mode", correct = TRUE), 
+    answer("Standard Deviation"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+ 
+)
+```
+
+```{r q10}
+  question("To measure the variability of data we can use ...",
+    answer("Mean"),
+    answer("Median"),
+    answer("Range", correct = TRUE),
+    answer("Kurtosis"), 
+    answer("Standard Deviation", correct = TRUE),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+ 
+)
+```
+
+```{r q11}
+  question("Correlated variables are problematic because ...",
+    answer("It leads to instable model",correct = TRUE),
+    answer("It leads to underfitting"),
+    answer("It complicates the model", correct = TRUE),
+    answer("It makes variables disappear"), 
+    answer("It prevents model from convergence"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+ 
+)
+```
+
+
+
+#### True or False
+
+```{r q12}
+  question("One of the measurement we can use to determine the shape of data is Skewness",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+
+```
+
+```{r q13}
+  question("Transforming the data is to unify the measurement unit",
+    answer("TRUE",message = "This is Normalization"),
+    answer("FALSE", correct = TRUE),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+
+```
+
+```{r q14}
+  question("Correlation is just normalized covariance",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+
+```
+
+```{r q15}
+  question("Negative correlation mean that as one variable increases the other variable tend to decrease",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+)
+
+```
+
+## Statistics Practice
+
+### Describing Data
+```{r preperations-statistics}
+library("here")
+library("e1071")
+source(file = here("R_code", "help_Functions.R"))
+trees_df <- trees                                    
+```
+
+
+Data :`trees_df` contains Diameter, Height and Volume for Black Cherry Trees
+Variables: 
+A data frame with 31 observations on 3 variables.
+
+1.	`Girth`	: numeric	Tree diameter (rather than girth, actually) in inches
+2.	`Height`:	numeric	Height in ft
+3.	`Volume`:	numeric	Volume of timber in cubic ft
+
+Perform the following: 
+ 
+- Calculate the mean, median and mode for all the variables._hint_: you can use `get_mode()` that we created during lesson.
+- Calculate the variance, standard deviation, and range for all variables._bonus_: calculate IQR. 
+- What is the shape of the data?_hit_:visualizing the data to get an insight.
+- Calculate the Skewness, Kurtosis of all variables. _hit_ make sure to load the `e1071` package.
+
+Note: all help functions are available for you to use. 
+
+```{r q18, exercise = TRUE, exercise.lines = 20,exercise.setup = "preperations-statistics", exercise.eval = FALSE}
+trees_df
+```
+
+
+## Preprocessing-Data *(challenge)*
+
+A market researcher is doing a research on cereal brands. She hopes that she can find patterns to predict cereal ratings. She came to you for help but did not find you, so she left this [note](http://web.archive.org/web/20000817072218/http://lib.stat.cmu.edu/DASL/Datafiles/Cereals.html) on your table. This page tells you everything you need to know about the data that was collected. It contains description of the data and information about each variable. be sure to read it carefully. She also wanted to get the following 
+
+- Replace missing values with NA? 
+- Find which variables have missing values and count their number of missing values?
+- Which instances have most missing values?
+- carobo, suguars and potass have missing values. please you impute with mean. be sure to create new variables for the imputed one. (e.g. i_carbo). 
+- Delete records with missing values. I think you records should be around 74 after that.
+
+
+```{r q19, exercise = TRUE, exercise.lines = 20,exercise.setup = "preperations-statistics", exercise.eval = FALSE}
+
+
+```
+
+
+_chellenge_
+
+- Can you split the data %50 %35 %15 data sets. Names are (tr_df, te_df, vl_df).
+- Can you run and PCA and tell me the amount of variability explained by first and second component combined. 
+
+```{r q20, exercise = TRUE, exercise.lines = 20,exercise.setup = "preperations-statistics", exercise.eval = FALSE}
+cer_cl_df
+
+```
+
+
+```{r prep,echo=FALSE, message=FALSE}
+library("here")
+library("e1071")
+
+file_path <- here("datasets", "cereals.csv")
+# reading files and replacing -1 with NA at once. Refer to the note. 
+cereals_df <-read.csv(file = file_path, na.strings = "-1", stringsAsFactors = FALSE)
+impute_list <- list(carbo_mean = mean(cereals_df$carbo, na.rm = TRUE),
+                    potass_mean = mean(cereals_df$potass, na.rm = TRUE),
+                    sugars_mean = mean(cereals_df$sugars, na.rm = TRUE))
+ 
+cereals_df$i_carbo <- cereals_df$carbo
+cereals_df$i_sugars <- cereals_df$sugars
+cereals_df$i_potass <- cereals_df$potass
+
+cereals_df$i_carbo[which(is.na(cereals_df$i_carbo))] <- impute_list$carbo_mean
+cereals_df$i_sugars[which(is.na(cereals_df$i_sugars))] <- impute_list$sugars_mean
+cereals_df$i_potass[which(is.na(cereals_df$i_potass))] <- impute_list$potass_mean
+
+cer_cl_df <-na.omit(cereals_df) 
+```
+
+
+
+```{r q18-solution}
+#Calculate the mean, median and mode for all the variables._hint_: you can use `get_mode()` that we created during lesson.
+#Calculate the variance, standard deviation, and range for all variables._bonus_: calculate IQR. 
+
+#Girth 
+mean(trees_df$Girth)
+median(trees_df$Girth)
+get_mode(trees_df$Girth)
+var(trees_df$Girth)
+sd(trees_df$Girth)
+IQR(trees_df$Girth)
+kurtosis(trees_df$Girth)
+skewness(trees_df$Girth)
+
+#Height
+mean(trees_df$Height)
+median(trees_df$Height)
+get_mode(trees_df$Height)
+var(trees_df$Height)
+sd(trees_df$Height)
+IQR(trees_df$Height)
+kurtosis(trees_df$Height)
+skewness(trees_df$Height)
+
+#Volume
+mean(trees_df$Volume)
+median(trees_df$Volume)
+get_mode(trees_df$Volume)
+var(trees_df$Volume)
+sd(trees_df$Volume)
+IQR(trees_df$Volume)
+kurtosis(trees_df$Volume)
+skewness(trees_df$Volume)
+
+#What is the shape of the data?_hit_:visualizing the data to get an insight.
+get_hist(trees_df$Girth)
+get_hist(trees_df$Height)
+get_hist(trees_df$Volume)
+```
+
+
+
+```{r q19-solution}
+file_path <- here("datasets", "cereals.csv")
+# reading files and replacing -1 with NA at once. Refer to the note. 
+cereals_df <-read.csv(file = file_path, na.strings = "-1", stringsAsFactors = FALSE)
+#Find which variables have missing values and count their number of missing values?
+#Which instances have most missing values?
+apply(cereals_df, MARGIN = 2, function(x){sum(is.na(x))})
+
+# Calculating means 
+impute_list <- list(carbo_mean = mean(cereals_df$carbo, na.rm = TRUE),
+                    potass_mean = mean(cereals_df$potass, na.rm = TRUE),
+                    sugars_mean = mean(cereals_df$sugars, na.rm = TRUE))
+
+#creating new variables ~ copies  
+cereals_df$i_carbo <- cereals_df$carbo
+cereals_df$i_sugars <- cereals_df$sugars
+cereals_df$i_potass <- cereals_df$potass
+
+#imputing with mean  
+cereals_df$i_carbo[which(is.na(cereals_df$i_carbo))] <- impute_list$carbo_mean
+cereals_df$i_sugars[which(is.na(cereals_df$i_sugars))] <- impute_list$sugars_mean
+cereals_df$i_potass[which(is.na(cereals_df$i_potass))] <- impute_list$potass_mean
+
+na.omit(cereals_df) %>% dim()
+```
+
+
+```{r q20-solution}
+#Can you split the data %50 %35 %15 data sets. Names are (tr_df, te_df, vl_df).
+idx <- sample(1:3, size = nrow(cer_cl_df),replace = TRUE, prob = c(0.5,0.35,0.15))
+tr_df <- cer_cl_df[idx == 1]
+te_df <- cer_cl_df[idx == 2]
+vl_df <- cer_cl_df[idx == 3]
+#Can you run and PCA and tell me the amount of variability explained by first and second component combined. 
+str(cer_cl_df)
+pca_df<- cer_cl_df %>% select(-mfr,-type,-carbo, -potass,-sugars,-name,-rating) %>%  prcomp()
+
+sum(pca_df$sdev[1:2])/sum(pca_df$sdev)
+
+library("ggbiplot")
+ggbiplot::ggbiplot(pca_df, choices = c(2,3))
+
+```
+
+
+
+

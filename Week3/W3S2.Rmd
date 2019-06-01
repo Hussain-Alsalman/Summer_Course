@@ -226,7 +226,6 @@ head(build.x(First ~ Second + Fourth + Fifth -1, testFrame, contrasts = FALSE))
 We will use `glment` package which implement this nice idea of panalizing the regression model. 
 
 
-
 ```{r}
 
 #first we create the Design matrix X 
@@ -249,8 +248,6 @@ m1  <- glmnet(x = acx_X, y = acy_Y, family = "binomial")
 
 View(as.matrix(m1$beta))
 
-
-#
 ```
 
 

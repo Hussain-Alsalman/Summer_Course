@@ -1,0 +1,29 @@
+---
+title: "Third Week Quiz"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+library("dplyr")
+```
+
+## Definitions & Concepts
+
+#### Select one correct answer
+
+```{r q1}
+  question("What are the types of data?",
+    answer("Qunatitative and Categorical", correct = TRUE),
+    answer("Clean and Not Clean"),
+    answer("True Data and False Data"),
+    answer("Nominal and Ordinal"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```

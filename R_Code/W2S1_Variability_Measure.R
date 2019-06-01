@@ -31,6 +31,7 @@ get_mode(set_2)
 ## Are the those data the same ?? 
 ## lets visualize them 
 
+get_dotplot(set_1, ant_nudge = 0.5)
 get_dotplot(set_2, ant_nudge = 0.5)
 
 ## In this case measure of centrality is not enough 

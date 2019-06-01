@@ -18,8 +18,9 @@ library("tidyverse")
 
 Recap what we learned from Week 1 
 
-- We learn a lot about the 
-
+- We learn a lot Data Science concepts 
+- We also learn a lot about Git 
+- We got familiar with R code 
 
 
 ## Intro to Statistics {.build}
@@ -105,9 +106,9 @@ Why do we preprocess data?
 - Data cleaning
 - Handling missing data 
 - Identify misclassificaitons 
-- Graphically identify * 
-- Transformation data _to work better with ML models_ *
-- Normalize the data * 
+- Graphically identify outliers 
+- Transformation data _to work better with ML models_ 
+- Normalize the data  
 
 /* _if time permits or next session_
 
