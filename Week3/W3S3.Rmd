@@ -55,7 +55,9 @@ Suppose, we want to classify a person’s income bracket based on the age, gende
 ## Patient example 
 
 In the medical field, suppose we are interested in classifying the type of drug a patient should be prescribed, based on certain patient characteristics, such as the age of the patient, and the patient’s sodium/potassium ratio. 
+
 ### Dataset 
+
 For a sample of 200 patients, the graph below presents a scatter plot of the patients’ sodium/potassium ratio against the patients’ age. The particular drug prescribed is symbolized by the shade of the points. Light gray points indicate drug Y; medium gray points indicate drugs A or X; dark gray points indicate drugs B or C. In this scatter plot, Na/K
 
 ```{r}

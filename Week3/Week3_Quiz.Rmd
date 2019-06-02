@@ -17,13 +17,103 @@ library("dplyr")
 #### Select one correct answer
 
 ```{r q1}
-  question("What are the types of data?",
-    answer("Qunatitative and Categorical", correct = TRUE),
-    answer("Clean and Not Clean"),
-    answer("True Data and False Data"),
-    answer("Nominal and Ordinal"), 
+  question("Classification is?",
+    answer("To assign a class based on based on predictor variables", correct = TRUE),
+    answer("To estimate numerical value based on predictor variables"),
+    answer("To group based on patterns between all variables"),
+    answer("Not good practice in data science"), 
     allow_retry = TRUE, 
     random_answer_order = TRUE
  
 )
 ```
+
+```{r q2}
+  question("Supervised learning is?",
+    answer("modeling technique that is used when labeled data is available", correct = TRUE),
+    answer("modeling technique that is used when labeled data is not available"),
+    answer("modeling technique that tries to generate data based on human input"),
+    answer("Not good practice in data science"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q3}
+  question("Unpervised learning is?",
+    answer("modeling technique that is used when labeled data is available"),
+    answer("modeling technique that is used when labeled data is not available", correct = TRUE),
+    answer("modeling technique that tries to generate data based on human input"),
+    answer("Not good practice in data science"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q4}
+  question("We get the *Sum of Squares Total Errors (SST)* by calculating ..",
+    answer("sum of the squared difference between the dependant variable and the mean", correct = TRUE),
+    answer("sum of the difference between the dependant variable and the mean"),
+    answer("difference between the dependant variable and the mean"),
+    answer("sum of the squared difference between the dependant variable and predicted value"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+
+```{r q5}
+  question("We get the *Sum of Squares Errors (SSE)* by calculating ..",
+    answer("sum of the squared difference between the dependant variable and the mean"),
+    answer("sum of the difference between the dependant variable and the predicted value"),
+    answer("difference between the dependant variable and the predicted value"),
+    answer("sum of the squared difference between the dependant variable and predicted value", correct = TRUE), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+```{r q6}
+  question("We get the *Sum of Squares Regression (SSR)* by calculating ..",
+    answer("sum of the squared difference between the predicted value variable and the mean", correct = TRUE),
+    answer("sum of the difference between the dependant variable and the predicted value"),
+    answer("sum of the difference between the dependant variable and the mean"),
+    answer("sum of the squared difference between the dependant variable and predicted value"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE
+ 
+)
+```
+
+#### Select all correct answers. 
+
+```{r q7}
+  question("the term **MSE** is ",
+    answer("$$\\frac{SSE}{n-2}$$", correct = TRUE),
+    answer("Mean of Squared Error", correct = TRUE),
+    answer("$$\\sum_{i=1}^{n}( \\hat{y}_i-\\bar{y})^2$$"),
+    answer("The root of the mean squared error"), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+)
+```
+
+
+```{r q8}
+  question("the term **RMSE** is ",
+    answer("$$\\sqrt{\\frac{SSE}{n-2}}$$", correct = TRUE),
+    answer("The mean squared error"),
+    answer("$$\\sum_{i=1}^{n}(y_{i} - \\bar{y})^2$$"),
+    answer("The root of the mean squared error", correct = TRUE), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+)
+```
+
+
