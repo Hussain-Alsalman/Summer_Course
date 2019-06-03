@@ -116,4 +116,170 @@ library("dplyr")
 )
 ```
 
+```{r q9}
+  question("The **Coefficient of Determination** is the same as  ",
+    answer("$$\\frac{SSR}{SST}$$", correct = TRUE),
+    answer("$$R$$"),
+    answer("$$y = a + bx + \\epsilon$$"),
+    answer("$$R^2$$", correct = TRUE), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+)
+```
+
+```{r q10}
+  question("Assumptions for Linear Regression are ",
+    answer("Linearity", correct = TRUE),
+    answer("Homoscedasticity", correct = TRUE),
+    answer("No auto-correlation", correct = TRUE),
+    answer("Normality", correct = TRUE), 
+    allow_retry = TRUE, 
+    random_answer_order = TRUE, 
+    type = "multiple"
+)
+```
+
+#### True or False
+
+```{r q11}
+  question("Logestic Regression is used when we try to predict binary value",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+```{r q12}
+  question("Logestic Regression is used when we try to predict binary value",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+```{r q13}
+  question("logit transofrmation is to convert values between -Inf and +Inf to values between 0 and 1",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+```{r q14}
+  question("The **bias** is an error from sensitivity to small fluctuations in the training set.",
+    answer("TRUE"),
+    answer("FALSE", correct = TRUE),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+```{r q15}
+  question("The **variance** is an error from erroneous assumptions in the learning algorithm",
+    answer("TRUE"),
+    answer("FALSE", correct = TRUE),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+)
+```
+
+
+## K nearest neighborhood 
+
+### Exercise
+
+```{r preperations}
+library("tibble")
+df_knn <- tribble(
+~Object,   ~Gender, ~Party,	       ~Age,	~Weight,	~Income,	~Class,
+    "A",	"Female",	"Independent",	20,	    120,	   40000,	   "Yes",
+    "B",	"Male",   "Republican",	  60,	    130,	   80000,	   "No",
+    "C",	"Male",   "Democrat",  	  35,	    150,	   50000,	   "Yes",
+    "D",	"Female",	"Democrat",  	  45,	    160,	   30000,	   "Yes",
+    "E",	"Female",	"Republican",   30,   	145,	   32000,	   "No"
+) %>% mutate_at(c("Gender","Party", "Class"),factor)
+knn_new <- tribble(
+~Object,   ~Gender, ~Party,	       ~Age,	~Weight,	~Income,	~Class,
+    "W",	"Female",	"Independent",	20,	    120,	   40000,   "Yes",
+    "X",	"Male",	  "Democrat",	    50,	    134,	   44000,	   "No"
+) %>% mutate_at(c("Gender","Party", "Class"),factor)
+```
+
+A researcher sent you and email with a traing set `df_knn` and test set `knn_new`. He explained over the phone that he would like to build a model that tells if the person is lying or being honest. Now your job is to use the data and build classification model using KNN. 
+
+<div id="q16-hint">
+**Hint:** :  You might want to normalize quantative variables.
+</div>
+
+
+```{r q16, exercise = TRUE, exercise.lines = 30,exercise.setup = "preperations", exercise.eval = FALSE}
+#raw data
+df_knn
+
+#the new data
+knn_new
+```
+
+
+
+
+```{r q16-solution}
+#raw data
+combined_df <-rbind(df_knn,knn_new)
+#preprocessing data and scaling them 
+mat_formula <- Class~Gender +Party+scale(Age)+scale(Weight)+scale(Income)-1
+
+comb_df_mat <-model.matrix( mat_formula, data = combined_df)
+
+dist_df<-dist(comb_df_mat,upper = TRUE, diag = TRUE)
+dist_df<-as.matrix(dist_df)
+
+sort(dist_df[6,],decreasing = FALSE) # YES if k = 3 we have 1:"YES" 5:"NO" 3:"YES"
+sort(dist_df[7,],decreasing = FALSE) # YES if k = 3 we have 3:"YES" 4:"YES" 5:"NO"  
+
+#one other solutions 
+library("caret")
+dummy_m <- dummyVars(Class ~ ., data = df_knn[,-1])
+preproces_m <- preProcess(df_knn[,-1], method = c("center", "scale"))
+
+
+tr_set <- predict(object = preproces_m, newdata = df_knn[,-1]) 
+tr_set <- predict(object = dummy_m, newdata = tr_set) %>% data.frame()
+tr_set$Class <- df_knn$Class
+knn_m<-train(Class ~ ., data = tr_set, method = "knn", tuneGrid = expand.grid(k = 3), tuneLength = 1, trControl = trainControl(method = "none", number = 1))
+
+te_set <- predict(object = preproces_m, newdata = knn_new[,-1]) 
+te_set <- predict(object = dummy_m, newdata = knn_new) %>% data.frame()
+te_set$Class <- knn_new$Class
+
+
+predict(knn_m, newdata = te_set)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

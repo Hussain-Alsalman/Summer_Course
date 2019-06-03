@@ -246,13 +246,15 @@ mult_m <-lm(univ_GPA ~ high_GPA + math_SAT + comp_GPA, data = df)
 
 
 
-## Important Assumptions about Linear Regression 
+## Some important assumptions about linear regression 
 
 1. Linearity: The relationship between the two variables is linear
 
 2. Homoscedasticity: The variance around the regression line is the same for all values of X
 
-3. The errors of prediction are distributed normally. This means that the deviations from the regression line are normally distributed.
+3. No auto-correlation: The errors of prediction are distributed normally. This means that the deviations from the regression line are normally distributed.
+
+4. Normality: requires all variables to be multivariate normal  
 
 
 

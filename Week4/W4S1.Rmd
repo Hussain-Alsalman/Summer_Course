@@ -293,7 +293,7 @@ We can use `caret` confusion matrix to evaluate
 
 ```{r}
 
-confusionMatrix()
+confusionMatrix(as.factor(preds),factor(test_data$Credit, levels = c("Good", "Bad"), labels = c(1,0)))
 
 ```
 

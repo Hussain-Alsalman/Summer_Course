@@ -20,9 +20,19 @@ library("ggplot2")
 
 ## What you will learn tonight 
 
+ - What is K-fold cross validation 
  - How to create *Elastic Net* model using cross validation
  - How to select the optimal hyper-parameter lambda 
  - How to deal with unbalanced classes 
+
+## k-Fold Cross-Validation
+
+Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample.
+
+```{r,fig.show='animate'}
+animation::conf.int()
+```
+
 
 ## So which lambda should we use cross validatoin 
 
@@ -110,7 +120,8 @@ Btw glemnet did the scaling for us for free, Hooray.
 
 # Predict give us probabilities... We still have to convert those to YES or NO
 value_prediciton <- predict(object = cv_m1, type = "response", newx = test_X, s="lambda.1se")
-
+# this might fail because the test data is too small for the job please refer to this solotion 
+## https://stackoverflow.com/questions/45983851/rs-glmnet-throwing-a-and-b-inner-dimensions-must-match-but-they-already-do
 pred <- ifelse (value_prediciton >= 0.5, TRUE,FALSE)
 
 # We create our Confusion Matrix and assess the values 
@@ -120,7 +131,6 @@ DAAG::confusion(predicted = pred, actual = test_set$Class)
 ```
 
 ##This is how we read the confusion matrix 
-
 
 
 ```{r, out.width='40%', fig.align='center'}

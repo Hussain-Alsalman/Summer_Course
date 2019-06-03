@@ -16,15 +16,15 @@ library("useful")
 
 ## What We learned so far?
 
- - 
- - 
- - 
- - 
+ - The difference between supervised learning vs unsupervised learning
+ - The concept of linear regression model ?
+ - Constructing regression models with R.
+ - Interperting your model 
  
 ## What you will learn tonight 
 
- - 
- - 
+ - The concept of logistic regression
+ - The concept of regularization and shrinkage
  - 
  
 ## Introduction to Logistic Regression 
@@ -112,6 +112,11 @@ library("coefplot")
 
 coefplot(incom1)
 
+# We can try to make some predictions using the new model 
+
+predict(incom1, newdata = data.frame(Income = TRUE, HouseCosts = 500, NumWorkers = 3, OwnRent ="Mortgage" , NumBedrooms =3 , FamilyType ="Female Head" ), type = "response")
+
+# the probability of this family having income more than 150K is only 4%
 ```
 
 
@@ -122,9 +127,22 @@ Our objective is to come up with a simple and powerful regression model. This mo
 - Select only the important variables 
 - Have stable weights _ coefficients_ 
 
+Selecting too many variables will lead to haigh variance **overfitting**. On the other hand, selecting only few will lead to high bais **underfitting**.
+
 $$
 \hat{y} = \hat\beta_{0} + \hat\beta_{1}x_{1} + \hat\beta_{2}x_{2} + \dots +  \hat\beta_{n}x_{n}
 $$
+##Bias–variance tradeoff
+
+The **bias** is an error from erroneous assumptions in the learning algorithm. High bias can cause an algorithm to miss the relevant relations between features and target outputs 
+
+The **variance** is an error from sensitivity to small fluctuations in the training set. High variance can cause an algorithm to model the random noise in the training data, rather than the intended outputs (overfitting).
+
+```{r, fig.align='center', echo = FALSE}
+file_path <- here("Images", "Bais-vs-variance.png")
+knitr::include_graphics(path = file_path)
+```
+
 
 Remember that our objective is to minimize the sum of squared error **SSE**. 
 
@@ -265,6 +283,6 @@ plot(m1, xvar = "lambda")
 coefpath(m1)
 ```
 
-#
+
 
 
