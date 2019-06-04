@@ -1,5 +1,5 @@
 ---
-title: "W4S2"
+title: "Week 4 Session 2"
 author: "Hussain Alsalman"
 date: "5/20/2019"
 output: html_document
@@ -20,19 +20,31 @@ library("ggplot2")
 
 ## What you will learn tonight 
 
- - What is K-fold cross validation 
+ - What is K-fold cross validation
  - How to create *Elastic Net* model using cross validation
- - How to select the optimal hyper-parameter lambda 
- - How to deal with unbalanced classes 
+ - How to select the optimal hyper-parameter lambda
+ - How to deal with unbalanced classes
 
-## k-Fold Cross-Validation
+# k-Fold Cross-Validation
 
+##Definition
 Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample.
 
-```{r,fig.show='animate'}
-animation::conf.int()
+## How does Cross-Validation work 
+
+```{r,fig.show = 'animate', animation.hook='gifski', echo=FALSE}
+animation::cv.ani(k = 10)
 ```
 
+The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. As such, the procedure is often called k-fold cross-validation. When a specific value for k is chosen, it may be used in place of k in the reference to the model, such as k=10 becoming 10-fold cross-validation.
+
+## Why do use it 
+
+Cross-validation is primarily used in applied machine learning to estimate the skill of a machine learning model on unseen data. That is, to use a limited sample in order to estimate how the model is expected to perform in general when used to make predictions on data not used during the training of the model.
+
+# Back to elastic net 
+
+Remember that we left the topic without knowing for sure what lambda to choose. In other words, we don't know how much we should punish the model for making errors. 
 
 ## So which lambda should we use cross validatoin 
 
@@ -82,7 +94,7 @@ cv_m1 <- cv.glmnet(x = train_X, y = train_y, family = "binomial", nfolds = 10, a
 
 ```
 
-we just fitted the model 100 times with different labdas for 10 folds. This is a lot of models. But all for good cause :D 
+We just fitted the model 100 times with different labdas for 10 folds. This is a lot of models. But all for good cause :D 
 
 if we plot this now, we get differet type of plot 
 
@@ -116,11 +128,15 @@ Btw glemnet did the scaling for us for free, Hooray.
 # Let's do some prediction. 
 
 ```{r}
-# Here we assess our model finally with testing set. A data that the model have not seen before. 
+##-------------WARNING------------------##
+#this might fail because the test data is too small for the job please refer to this solotion 
+## https://stackoverflow.com/questions/45983851/rs-glmnet-throwing-a-and-b-inner-dimensions-must-match-but-they-already-do
 
+# Here we assess our model finally with testing set. A data that the model have not seen before. 
 # Predict give us probabilities... We still have to convert those to YES or NO
 value_prediciton <- predict(object = cv_m1, type = "response", newx = test_X, s="lambda.1se")
-# this might fail because the test data is too small for the job please refer to this solotion 
+##-------------WARNING------------------##
+#this might fail because the test data is too small for the job please refer to this solotion 
 ## https://stackoverflow.com/questions/45983851/rs-glmnet-throwing-a-and-b-inner-dimensions-must-match-but-they-already-do
 pred <- ifelse (value_prediciton >= 0.5, TRUE,FALSE)
 

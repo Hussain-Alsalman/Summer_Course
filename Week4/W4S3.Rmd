@@ -1,0 +1,305 @@
+---
+title: "Week 4 Session 3"
+author: "Hussain Alsalman"
+date: "6/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("here")
+library("ggplot2")
+library("caret")
+library("ggthemes")
+```
+
+# `caret` package 
+
+Caret is short for *C*lassification *A*nd *RE*gression *T*raining. It integrates all activities related to model development in a streamlined workflow. For nearly every major ML algorithm available in R.
+
+## What makes `caret` package awesome
+
+With R having so many implementations of ML algorithms, it can be challenging to keep track of which algorithm resides in which package.
+
+Sometimes the syntax and the way to implement the algorithm differ across packages. This combined with data preprocessing, consulting help page, hyperparameter tuning to find best model can make building predictive models an involved task.
+
+# Practical Example to using caret 
+
+We will go through everything we learned so far and little bit more. 
+
+## Setp 1: Importing the Data 
+
+
+```{r}
+# Load the caret package
+library("caret")
+
+# Import dataset
+orange <- read.csv('https://raw.githubusercontent.com/selva86/datasets/master/orange_juice_withmissing.csv')
+
+# Structure of the dataframe
+str(orange)
+
+# See top 6 rows and 10 columns
+head(orange[, 1:10])
+```
+
+
+The goal of this dataset is to predict which of the two brands of orange juices did the customers buy.
+
+The predictor variables are characteristics of the customer and the product itself. It contains 1070 rows with 18 columns. The response variable is ‘Purchase’ which takes either the value ‘CH'(citrus hill) or ‘MM'(minute maid).
+
+## Data Preparation and Preprocessing
+
+### Setp 2: How to split the dataset into training and testing sets?
+
+The first step is to split it into training(80%) and test(20%) datasets using caret’s `createDataPartition` function
+
+```{r}
+
+# Create the training and test datasets
+set.seed(100)
+
+# A: Get row numbers for the training data
+trainRowNumbers <- createDataPartition(y = orange$Purchase, p=0.8, list=FALSE)
+
+#B: Create the training  dataset
+trainData <- orange[trainRowNumbers,]
+
+#C: Create the test dataset
+testData <- orange[-trainRowNumbers,]
+
+# Store X and Y for later use.
+x = trainData[, 2:18]
+y = trainData$Purchase
+
+```
+
+
+### Setp 3: Descriptive statistics
+
+```{r}
+
+library("skimr")
+skimmed <- skim_to_wide(trainData)
+skimmed[, c(1:5, 9:11, 13, 15:16)]
+```
+
+### Setp 4: handling missing data
+
+#### How to impute missing values using preProcess()?
+
+```{r build-preprocess-medianImpute-model}
+# Create the median imputation model on the trainng data 
+preProcess_missingdata_model <- preProcess(trainData, method='medianImpute')
+preProcess_missingdata_model
+
+```
+
+##### The way caret implement preprocessings taks getting use to
+
+`caret` has somehow confusion way to implement preprocessings. It uses predict function for implementing any pre-processing steps. Sometimes you are not necessary predicting anything but this is how it works.
+
+```{r implement-preprocess-medianImpute}
+trainData <- predict(preProcess_missingdata_model, newdata = trainData)
+anyNA(trainData)
+```
+
+### Setp 5: Create dummy variables for categorical data.
+
+```{r}
+# One-Hot Encoding
+# Creating dummy variables is converting a categorical variable to as many binary variables as here are categories.
+dummies_model <- dummyVars(Purchase ~ ., data=trainData)
+
+# Create the dummy variables using predict. The Y variable (Purchase) will not be present in trainData_mat.
+trainData_mat <- predict(dummies_model, newdata = trainData)
+
+# # Convert to dataframe
+trainData <- data.frame(trainData_mat)
+
+# # See the structure of the new dataset
+str(trainData)
+```
+
+
+In above case, we had one categorical variable, `Store7` with 2 categories. It was one-hot-encoded to produce two new columns – `Store7.No` and `Store7.Yes`
+
+
+### Setp 6: Data Normalization and Transformation
+
+`caret` a bunch of preprocessing types we can choose to implement on our data. 
+
+- `range`: Normalize values so it ranges between 0 and 1
+- `center`: Subtract Mean
+- `scale`: Divide by standard deviation
+- `BoxCox`: Remove skewness leading to normality. Values must be > 0
+- `YeoJohnson`: Like BoxCox, but works for negative values.
+- `expoTrans`: Exponential transformation, works for negative values.
+- `pca`: Replace with principal components
+- `ica`: Replace with independent components
+- `spatialSign`: Project the data to a unit circle
+
+```{r}
+preProcess_range_model <- preProcess(trainData, method='range')
+trainData <- predict(preProcess_range_model, newdata = trainData)
+
+# Append the Y variable
+trainData$Purchase <- y
+
+#checking the values of all X
+apply(trainData[, 1:10], 2, FUN=function(x){c('min'=min(x), 'max'=max(x))})
+```
+
+### Exploring and visualize the importance of independent variables _bonus_
+
+We discussed previously how to see the influence of continuous independent variables on the continuous dependent variable. We used scatterplots. However, since Y is categorical. We can use a simple trick which is exploring the statistics between the two categories. Best way to do that is drawing Boxplot. 
+
+`caret` provides nice ploting function called `featurePlot()`. We will use it to gain insight. 
+
+```{r}
+featurePlot(x = trainData[, 1:18], 
+            y = trainData$Purchase, 
+            plot = "box",
+            strip=strip.custom(par.strip.text=list(cex=.7)),
+            scales = list(x = list(relation="free"), 
+                          y = list(relation="free")))
+
+## Or we can use the ggplot method.. we need to transform data into tidy version first.
+tr_gg <- trainData %>% 
+  gather(key="colmns" ,value = "value",-Purchase)
+
+tr_gg %>%   ggplot(aes(y = value, x = Purchase)) +
+  geom_boxplot(aes(color = ifelse(colmns == "LoyalCH","blue3","red")), show.legend = FALSE)+
+  facet_wrap(colmns~.,scales = "free_y") + theme_bw() + coord_flip()
+```
+
+
+So, What did you observe in the above figure?
+
+Consider for example, **LoyalCHs** subplot, which measures the loyalty score of the customer to the CH brand. The mean and the placement of the two boxes are glaringly different. Just by seeing that, I am pretty sure, LoyalCH is going to be a significant predictor of Y.
+
+What other predictors do you notice have significant mean differences?
+Let’s do a similar exercise with density plots.
+
+In this case, For a variable to be important, I would expect the density curves to be significantly different for the 2 classes, both in terms of the height (kurtosis) and placement (skewness).
+
+```{r}
+### using Caret function 
+featurePlot(x = trainData[, 1:18], 
+            y = trainData$Purchase, 
+            plot = "density",
+            strip=strip.custom(par.strip.text=list(cex=.7)),
+            scales = list(x = list(relation="free"), 
+                          y = list(relation="free")))
+## using ggplot
+tr_gg %>% 
+ggplot() +
+  geom_density(mapping = aes(value, group = Purchase, color = Purchase))+
+  facet_wrap(colmns~.,scales = "free") + theme_bw()+ expand_limits(x=c(1.5,-.5))
+
+```
+
+
+Having visualised the relationships between X and Y, We can only say which variables are likely to be important to predict Y. It may not be wise to conclude which variables are NOT important.
+
+Because sometimes, variables with uninteresting pattern can help explain certain aspects of Y that the visually important variables may not.
+
+So to be safe, let’s not arrive at conclusions about excluding variables prematurely.
+
+
+### Setp 7: Training and Tuning Model 
+
+`caret` has huge number of available models you can choose from. To view this list  we can call this  `getModelInfo()` function. 
+
+```{r}
+names(getModelInfo())
+```
+
+As you can see it has huge number of algorithms. 
+
+let's try random forest
+
+**random forest** operates by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) of individual trees. 
+
+
+To know what parameters this model requires we use the `modelLookup()` function. 
+
+```{r}
+
+modelLookup("rf")
+
+```
+
+We can see that for random forest algorithm there is one hyper-parameter called `mtry`. However, we can also specify the number of trees in the forest :) by specifying `ntree`.  Here is a definition of the two. 
+
+- `mtry`: Number of variables randomly sampled as candidates at each split.
+- `ntree`: Number of trees to grow.
+
+
+We can start training our model by using the `train()` function. Moreover, we can control the training parameters by using the `trainControl()` function.  We will perform the following 
+
+- Set the training control 
+  - We will use cross validation
+  - We will will set it to 10 k folds
+- Set the number of variables used in `mtrys`. we will make a grid. Basically we will try 1 to 10 then 16 then 18 variables. 
+- Set the number of tree to 400. 
+- Put everything in the `train()` function. This might take a minute. 
+
+```{r}
+set.seed(100)
+
+tr_control <- trainControl(
+  method = "cv", 
+  number = 10
+)
+
+mtrys <- c(1:10,16,18)
+tune_grid <- expand.grid(mtry = mtrys)
+model_rf <- train(Purchase ~ . , data = trainData, method = "rf", ntree = 400, tuneGrid = tune_grid, trControl = tr_control)
+```
+
+to view the performance on the training set we can simply print the model 
+
+```{r}
+model_rf
+```
+
+Now it is time to put our model to the real test. 
+
+### Setp 8: Testing and Evaluating the model 
+
+#### Pre-processing the test data 
+
+In order to test the model, we will need to perform all the pre-processing steps on the test data as well 
+
+```{r}
+# Step 1: Impute missing values 
+testData_pre <- predict(preProcess_missingdata_model, testData)  
+
+# Step 2: Create one-hot encodings (dummy variables)
+testData_pre <- predict(dummies_model, testData_pre)
+
+# Step 3: Transform the features to range between 0 and 1
+testData_pre <- predict(preProcess_range_model, testData_pre)
+
+```
+
+#### Predict on test data 
+
+Now the test set is ready to be used for the testing. 
+
+```{r}
+predicted <- predict(model_rf, testData_pre)
+head(predicted)
+```
+
+To evaludate our performance we use the confusion matrix 
+
+```{r}
+# Compute the confusion matrix
+confusionMatrix(reference = testData$Purchase, data = predicted, positive='MM')
+```
+
+

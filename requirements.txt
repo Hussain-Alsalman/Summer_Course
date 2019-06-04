@@ -26,7 +26,14 @@ req_packages <- c("devtools",
  		"C50",
  		"rpart",
  		"rpart.plot",
- 		"xgboost")
+ 		"xgboost",
+ 		"dendextend",
+ 		"skimr",
+ 		"randomForest",
+ 		"fastAdaboost",
+ 		"earth",
+ 		"caretEnsemble"
+ 		"ggthemes")
 
 install.packages(req_packages)
 

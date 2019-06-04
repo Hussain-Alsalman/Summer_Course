@@ -1,5 +1,5 @@
 ---
-title: "Week3 Session 3"
+title: "Week 3 Session 3"
 author: "Hussain Alsalman"
 date: "5/20/2019"
 output: html_document
@@ -12,6 +12,7 @@ library("readxl")
 library("ggplot2")
 library("ggforce")
 library("caret")
+library("dendextend")
 ```
 
 ## What you will learn tonight 
@@ -279,3 +280,80 @@ ggplot(aes(x = k, y = 1-Accuracy)) + geom_line( ) + geom_point(aes(color = k == 
 **Clustering** refers to the grouping of records, observations, or cases into classes of
 similar objects. Clustering differs from classification in that there is no target variable for clustering
 
+
+## Common concerns between classification and clustering 
+
+- how to measure similarity
+- how to recode categorical variables
+- how to standardizeor normalize numerical variables;
+- how many clusters we expect to uncover.
+
+**Both uses the Euclidean Distance**
+
+## What Clustering Algorithms are trying to achieve 
+
+```{r, fig.align='center', echo = FALSE}
+file_path <- here("Images", "Clustering_try_to_achieve.png")
+knitr::include_graphics(path = file_path)
+```
+
+identification of groups of records such that similarity within a group is very high while the similarity to records in other groups is very low
+
+
+##Hierarchical Clustering Methods
+
+**Agglomerative** clustering methods initialize each observation to be a tiny cluster of its own. Then, in succeeding steps, the two closest clusters are aggregated into a new combined cluster. In this way, the number of clusters in the data set is reduced by one at each step. Eventually, all records are combined into a single huge cluster.
+
+**Divisive** clustering methods begin with all the records in one big cluster, with the most dissimilar records being split off recursively, into a separate cluster, until each record represents its own cluster.
+
+### Criteria to decide between two clusters 
+
+- Single linkage
+- Complete linkage
+
+
+#### practice single linkage 
+
+```{r answer}
+library("cluster")
+df <- c(2,5,9,15,16,18,25,33,33,45)
+
+agn <- agnes(df, diss = FALSE, stand = FALSE, method = "single")
+dend_agn <- as.dendrogram(agn)
+# Make and plot the dendrogram 
+dend_agn %>% 
+   set("branches_k_color", k=3) %>% 
+   set("labels_colors", "black")  %>% set("labels_cex", 1) %>% 
+   set("leaves_pch", 19) %>%
+plot(
+xlab = "Index of Data Points", ylab = "Steps",
+main = "Single-Linkage Clustering")
+```
+
+
+#### practice complete linkage
+```{r}
+
+
+agn_complete <- agnes(df, diss = FALSE,
+stand = FALSE,
+method = "complete")
+dend_agn_complete <-as.dendrogram(agn_complete) 
+
+# Make and plot the dendrogram 
+
+dend_agn_complete %>% 
+   set("branches_k_color", k=3) %>% 
+   set("labels_colors", "black")  %>% set("labels_cex", 1) %>% 
+   set("leaves_pch", 19) %>% plot(
+xlab = "Index of Data Points", ylab = "Steps",
+main = "Complete-Linkage
+Clustering")
+   
+
+```
+
+
+###Kmeans Clustering Methods
+
+Homework. 

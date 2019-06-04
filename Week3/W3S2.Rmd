@@ -1,5 +1,5 @@
 ---
-title: "W3S2"
+title: "Week 3 Session 2"
 author: "Hussain Alsalman"
 date: "5/19/2019"
 output: html_document
