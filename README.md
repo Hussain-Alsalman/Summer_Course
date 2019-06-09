@@ -1,6 +1,6 @@
-#Course Objectives 
+# Course Objectives 
 
-##Pre-course preparations 
+## Pre-course preparations 
 
   - Installing the latest R version or  ≥ 3.5 (https://cloud.r-project.org)
   - Intalling the latest RStudio Desktop or ≥1.1 (https://www.rstudio.com/products/rstudio/download/)
@@ -13,7 +13,7 @@ During this course we will be using few packages that do not come with the base 
 
 _Note_: the file has a long list and installing all these packages might take sometime. Be patient. 
 
-##Outline
+## Outline
 
 -  Introduction to Data Science – W1S1
     - Motivation to learn Data Science
@@ -77,9 +77,16 @@ _Note_: the file has a long list and installing all these packages might take so
 - Supervised Models 
     - Linear Regression 
     - Logistic Regression 
+    - Elastic Nets
+    - Decision Trees
+    - Xgboost classifiers
+    - Random Forest (brief)
 - Unsupervised Models 
+    - KNN models 
+    - Hierarchical Clustering
+    - Kmean (Homework)
 - Model Evaluation
-
-      - 
-      - 
+    - Handeling unbalanced classes
+    - K-Fold Cross-Validation
+    - Confusion Matrix
 
