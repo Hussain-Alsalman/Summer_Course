@@ -21,7 +21,7 @@ library("xgboost")
 ## What you will learn tonight 
 
  - What is the Decision Tree Model
- - Type of Decision Tree 
+ - Type of Decision Trees 
  - What is happening under the hood for Decision Tree Cart 
  - How to create Decision Tree Models.
  - Visualize Decision Trees
@@ -76,8 +76,10 @@ We can specify a many things related to the Tree Structure in the algorithm.
 
 ```{r}
 predictors <- credit_risk[,c("Savings","Assets","Income")]
-d_tree <-C5.0(x =predictors, y = credit_risk[,"CreditRisk"] ,control = C5.0Control(minCases = 2,earlyStopping = FALSE))
-plot(d_tree)
+d_tree <-C5.0(x =predictors, y = credit_risk[,"CreditRisk"], subset = FALSE )
+plot(d_tree, type = "s")
+
+summary(d_tree)
 ```
 
 

@@ -6,6 +6,12 @@
   - Intalling the latest RStudio Desktop or ≥1.1 (https://www.rstudio.com/products/rstudio/download/)
   - Installing latest Git or ≥  2.7 
       - Also install Git Bash for windows  
+      
+## R packages to isntall 
+
+During this course we will be using few packages that do not come with the base R. Therefore, I have put a chunk of code in the `requirements.txt` that will install all the necessary packages for you. All you have to do is open the R-base and copy and paste the content of the file. 
+
+_Note_: the file has a long list and installing all these packages might take sometime. Be patient. 
 
 ##Outline
 

@@ -33,7 +33,9 @@ req_packages <- c("devtools",
  		"fastAdaboost",
  		"earth",
  		"caretEnsemble"
- 		"ggthemes")
+ 		"ggthemes", 
+ 		"visdat",
+ 		"naniar")
 
 install.packages(req_packages)
 
