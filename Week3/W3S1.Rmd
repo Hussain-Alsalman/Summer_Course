@@ -24,9 +24,9 @@ library("DAAG")
 ## What we will learn today 
 
  - The difference between supervised learning vs unsupervised learning
- - The concept of linear regression model ?
+ - The concept of linear regression model?
  - Constructing regression models with R.
- - Interperting your model 
+ - Interperting your model.
 
 ## Branches of Machine Learning
 

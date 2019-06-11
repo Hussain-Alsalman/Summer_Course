@@ -425,7 +425,7 @@ Matricies are similar to data frames except that the whole rows and columns need
 as.matrix(df)
 ```
 
-## Arrays 
+### Arrays 
 
 are multidimensional vectors. We rarely use them but they are useful to do complex mathimatics. Simply to narray in `NumPy` module in Python
 

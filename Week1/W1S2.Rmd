@@ -23,11 +23,11 @@ Any questions about last session?
 <h2>By the end tonight session you will</h2>  
 </br>
 
-- Learn some basic commands using git. 
-- Create you Github account and push your "hello world" repo.
-- Learn how to use Rstudio.
-- Install few R pacakges that will make your life easier.
-- Learn the foundation of R Programming (Tonight and next session). 
+  - Learn some basic commands using git. 
+  - Create you Github account and push your "hello world" repo.
+  - Learn how to use Rstudio.
+  - Install few R pacakges that will make your life easier.
+  - Learn the foundation of R Programming (Tonight and next session). 
 
 
 ## By now you should have done the following. 

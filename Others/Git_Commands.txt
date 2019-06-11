@@ -100,9 +100,6 @@ git status
 	git status 
 	git checkout --hello.txt 
 
-
-
-
 # Creating new Branch and make new commits
 git checkout -b new_idea
 nano hello.txt 
@@ -120,52 +117,81 @@ git diff
 git add hello.txt 
 git status
 git commit -m "Another great idea"
+# Merge Branches 
 git merge new_idea 
+
+# Make more changes 
 nano hello.txt 
 git status
 git commit -m "All ideas are great"
 git commit -am "All ideas are great"
+
+# View where our HEAD is 
 git log 
-git log --graph --oneline --pretty 
-git log --graph --oneline --pretty --all
-git log --graph --oneline --all
-git branch 
-git log --graph --oneline --all --short
-git log --help
-git log --graph --oneline --all --decorate
+git log--graph --oneline --all --decorate
+
+# View all branches
 git branch
+
+# Delete the branch that we don't need anymore 
 git branch -d new_idea 
 git log --graph --oneline --all --decorate
+
+# Create more Branches
 git checkout -b hussain_ideas
 git checkout -b reem_ideas
 git checkout -b fatimah_ideas
+
+# Switch to master branch
 git checkout master 
 git status
+
+# Let's add the file manually 
 git add hello.txt 
 git commit -m "creating sections for all team members"
+
+# Switch to Hussain's branch and make changes
 git checkout hussain_ideas 
 nano hello.txt 
 git merge master 
+
+# Switch to reem's branch and merge it to master
 git checkout reem_ideas 
 git merge master 
+
+# Switch to Fatimah's branch and merge it to master
 git checkout fatimah_ideas 
 git merge master 
 git log --graph --oneline --all --decorate
+
+# Let's make more changes 
 nano hello.txt 
 git commit -am "I got new ideas friendsnano hello.txt "
+
+# Switch to Hussain's branch and make changes there 
 git checkout hussain_ideas 
 nano hello.txt 
 git commit -am "I too got new ideas"
+
+# Switch to Fatimah's branch and make changes there 
 git checkout fatimah_ideas 
 nano hello.txt 
+
+# Switch to Reem's branch and make changes there 
 git checkout reem_ideas 
 nano hello.txt 
 git commit -am "My idea is no ideas here"
+
+# Switch to master and view our log 
 git checkout master 
 git log --graph --oneline --all --decorate
+
+# Let's select what we want to merge and view 
 git cherry-pick 5103d21 b0fe96a
 git log --graph --oneline --all --decorate
 nano hello.txt 
+
+# Delete all branches that we no longer need 
 git branch -d reem_ideas hussain_ideas fatimah_ideas 
 git branch -D reem_ideas hussain_ideas fatimah_ideas 
 git log --graph --oneline --all --decorate
