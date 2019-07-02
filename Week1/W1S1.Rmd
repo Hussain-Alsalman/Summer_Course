@@ -61,7 +61,7 @@ knitr::include_graphics(path = here("Images", "Session1.gif"))
 | Problem 	| Sales reps spend a lot of time doing online research and gathering information from disparate sources before they actually engage with a sales prospects 	|
 |-----------	|----------------------------------------------------------------------------------------------------------------------------------------------------------	|
 | Data Used 	| LinkedIn and other public sources available on the Web 	|
-| Solution 	| Predictive model called 'Lattice Engines' 	|
+| Solution 	| Predictive model developed by 'Lattice Engines' company 	|
 | Benefits 	| Productivity Increased by 100% 	|
 
 [Read full story here](https://blogs.wsj.com/cio/2012/12/05/how-dell-predicts-which-customers-are-most-likely-to-buy/)

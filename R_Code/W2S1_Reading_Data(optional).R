@@ -5,7 +5,7 @@ source(file = here('R_Code', 'help_Functions.R'))
 
 ## Reading the data from database and using SQL commands 
 library("ODB")
-
+library("tidyverse")
 ## let's connect to the database 
 odb <- odb.open(odbFile = here("datasets", "TT NorthWind.odb"))
 df <- odb.read(odb, 'SELECT "C"."CustomerID",
@@ -41,8 +41,9 @@ df <- odb.read(odb, 'SELECT "C"."CustomerID",
 
 names(df)[16] <- "Supplier_Country"
 names(df)[2] <- "Customer_Country"
-str()
+str(df)
 
+View(head(df))
 ## Classify the high valued customers based on their average basket value 
 
 df %>% group_by(CustomerID,OrderID) %>%  mutate(item_subtotal = UnitPrice * Quantity) %>% 

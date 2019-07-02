@@ -32,7 +32,7 @@ req_packages <- c("devtools",
  		"randomForest",
  		"fastAdaboost",
  		"earth",
- 		"caretEnsemble"
+ 		"caretEnsemble",
  		"ggthemes", 
  		"visdat",
  		"naniar")
