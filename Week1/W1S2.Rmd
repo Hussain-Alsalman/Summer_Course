@@ -16,7 +16,12 @@ library("tidyverse")
 
 ## Welcome back to The Course
 
-Any questions about last session? 
+We will wait for others to join.. we will start in five minutes 
+
+```{r, out.width='50%', fig.align='center'}
+knitr::include_graphics(path = here("Images", "giphy.gif"))
+```
+
 
 ----
 

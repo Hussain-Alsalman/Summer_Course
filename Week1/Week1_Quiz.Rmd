@@ -183,7 +183,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r q14}
-  question("How to merge to a branch `master` with branch `featureB`",
+  question("How to merge to a branch `featureA` with branch `featureB`",
     answer("we checkout to `featureA` by `git checkout feastureA` then `git merge feastureB`", correct = TRUE),
     answer("we checkout to `featureB` by `git checkout feastureB` then `git merge feastureA`"),
     answer("`git merge feastureA featureB`"),
