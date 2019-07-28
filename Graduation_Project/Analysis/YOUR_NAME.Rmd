@@ -15,10 +15,36 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Background Story 
 
-Now that you have taken an amazing course with your nice teacher the Arabian Analyst you decided to open a data science consulting firm. Your first customer is a Telecom company that is trying to figure out the reasons why customers are switching to their competitors.  During your meeting with the CEO Ola, 
+Now that you have taken an amazing course with your nice teacher the Arabian Analyst you decided to open a data science consulting firm. Your first customer is a Telecom company that is trying to figure out the reasons why customers are switching to their competitors.  During your meeting with the CEO Ola, she told you that she is interested to develop a model that help her company to determin which customers are likely to switch *Churn* to their competitors. She also provided you with the company data and description. 
 
-## Data Dictionary 
+## Dataset information. 
 
+The data set contains 20 predictors worth of information about 3000 customers, along with the target variable, churn, an indication of whether that customer churned (left the company) or not  
+
+The variables are as follows: 
+
+    • State: Categorical for the 50 states and the District of Columbia. 
+    • Accountlength: Integer-valued, how long account has been active. 
+    • Areacode: Categorical 
+    • Phonenumber: Essentially a surrogate for customerID. 
+    • Internationalplan: Dichotomous categorical yes or no. . 
+    • Voicemailplan: Dichotomous categorical yes or no. 
+    • Numberofvoicemailmessages: Integer-valued. 
+    • Totaldayminutes: Continuous minutes customer used service during the day. 
+    • Totaldaycalls: Integer-valued. 
+    • Totaldaycharge: Continuous perhaps based on above two variables. 
+    • Total eve minutes: Continuous, minutes customer used service during the evening. 
+    • Totalevecalls: Integer-valued. 
+    • Totalevecharge: Continuous perhaps based on above two variables. 
+    • Total night minutes: Continuous, minutes customer used service during the night. 
+    • Totalnightcalls: Integer-valued. 
+    • Totalnightcharge: Continuous perhaps based on above two variables.  
+    • Total international minutes: Continuous, minutes customer used service to make international calls. 
+    • Totalinternationalcalls: Integer-valued. 
+    • Totalinternationalcharge:  Continuous perhaps based on above two variables. 
+    • Numberofcallstocustomerservice:  Integer-valued. 
+    • Churn: Target.Indicator of whether the customer has left the company (true or false).
+    
 ## Analysis 
 
 ### Setp 1: Importing the Data
