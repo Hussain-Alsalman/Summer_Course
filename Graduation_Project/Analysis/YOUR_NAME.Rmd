@@ -1,0 +1,135 @@
+---
+title: "Graduation Project"
+author: "ENTER YOUR NAME HERE"
+date: "" # mm/dd/yyyy
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#load all the necessary libraries and comment why did you need them.
+
+```
+
+## Study Case: churning customers from a Telecom company. 
+
+## Background Story 
+
+Now that you have taken an amazing course with your nice teacher the Arabian Analyst you decided to open a data science consulting firm. Your first customer is a Telecom company that is trying to figure out the reasons why customers are switching to their competitors.  During your meeting with the CEO Ola, 
+
+## Data Dictionary 
+
+## Analysis 
+
+### Setp 1: Importing the Data
+
+```{r Importing the data}
+# use read.csv or read_csv from readr packages 
+```
+
+### Setp 2: Split the dataset into training and testing sets
+
+```{r}
+# use createDataPartition() from caret package or use the sample() from base R. 
+```
+
+
+
+### Setp 3: Descriptive statistics
+
+```{r}
+# use summary() function or perform more advance descriptive statistics using dplyr package
+```
+
+Write you analysis from Descriptive statistics here .... 
+
+#### BONUS Step 3.1 : Exploratory Analysis
+```{r}
+# use ggplot to explore :
+  # data centrality 
+  # data variability 
+  # data shape 
+  # outliers 
+```
+
+Write you analysis from Exploratory Analysis here .... 
+
+
+##### Correlations 
+```{r}
+# Describe the relationship between variables 
+```
+
+Write you analysis from Correlations here .... 
+
+*hint*: identify highly correlated variables and explain why we should not include them. 
+
+##### Histograms
+
+```{r}
+# use ggplot package with geom_histogram() or hist() from base R. 
+```
+
+
+Write you analysis from Histograms here .... 
+*hint*: identify skewed variables and determine if you need to do transformation on them or not. Justify your decision. 
+
+
+
+##### Scatterplots 
+
+```{r}
+# use ggplot package with geom_point() or plot() from base R. 
+```
+
+Write you analysis from Scatterplots here .... 
+
+#### Boxplots 
+
+```{r}
+# use ggplot package with geom_boxplot() or boxplot() from base R. 
+```
+
+Write you analysis from Boxplots here .... 
+
+### Setp 5: Create dummy variables for categorical data
+
+
+```{r}
+# Use dummyVars() from caret package or perform the conversion manually. 
+```
+
+Describe which categorical variables did you convert to dummy variables and why you chose them. 
+
+
+### Setp 6: Data Normalization and Transformation
+
+```{r}
+# Use perProcess() from caret package or perform the conversion manually. 
+```
+
+Explain why it is important to normalize the data. Moreover, based on what you decision after performing histograms, you should perform all necessary transformation here.
+
+
+### Setp 7: Training and Tuning Model
+
+```{r}
+# use train() from caret package or select your chose from any one of the models we discussed during this course
+```
+
+justify why you chose the model you did and discuss ways that this model could be improved. 
+
+*hint*: use cross validation and fine tune your model by using a grid search. 
+
+### Setp 8: Testing and Evaluating the model
+
+
+```{r}
+# use the confusionMatrix() from caret package or confusion() form DAAG package. 
+# make sure that the output data is in the right format for those functions. 
+```
+
+
+Discuss your results and explain why your model is performing well or not well. 
+
+
