@@ -1,7 +1,7 @@
 ---
 title: "Graduation Project"
 author: "ENTER YOUR NAME HERE"
-date: "" # mm/dd/yyyy
+date: "07/29/2019" #mm/dd/yyyy
 output: html_document
 ---
 
@@ -117,6 +117,20 @@ Write you analysis from Scatterplots here ....
 ```
 
 Write you analysis from Boxplots here .... 
+
+
+### Setp 4: handling missing data
+
+```{r}
+# use any method to determin if there is missing data or not. This include 
+# Identify if there is a character to indicate missing data. e.g -1, "", 9999
+# If the data is actually recognize by your R as NA, that is asweome 
+
+# anyNA(), skim_to_wide() from the skimr package.
+```
+
+
+
 
 ### Setp 5: Create dummy variables for categorical data
 
